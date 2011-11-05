@@ -1,8 +1,4 @@
-Cheetah>=2.4.3
-Markdown>=2.0.3
-WTForms>=0.6.1
-distribute>=0.6.14
-mongoengine>=0.4
-pymongo>=1.9
-web.py>=0.34
-wsgiref>=0.1.2
+Paste
+WebOb
+distribute
+wsgiref
