@@ -17,7 +17,7 @@ class BasePyntaApp(Response):
         return NotImplemented
 
 
-class MainPyntaApp(URLMap):
+class Pynta(URLMap):
     
     def __init__(self):
         URLMap.__init__(self)
