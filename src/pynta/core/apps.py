@@ -10,6 +10,11 @@ class PyntaApp(Response):
     __metaclass__ = BasePyntaApp
 
 
+    def __init__(self, settings, *args, **kwargs):
+        super(PyntaApp, self).__init__(*args, **kwargs)
+        self.settings = settings
+
+
     def __call__(self, environ, start_response):
         self.request = Request(environ)
         self.environ = environ
