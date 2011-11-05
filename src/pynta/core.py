@@ -5,16 +5,8 @@ from paste.util.import_string import try_import_module
 from webob import Request, Response
 
 
-class BasePyntaApp(Response):
-    
-    def __call__(self, environ, start_response):
-        self.request = Request(environ)
-        self.environ = environ
-        self.body = self.get_body()
-        return super(BasePyntaApp, self).__call__(environ, start_response)
-    
-    def get_body(self):
-        return NotImplemented
+class BasePyntaApp(type):
+    pass
 
 
 class Pynta(URLMap):
@@ -35,5 +27,17 @@ class Pynta(URLMap):
             self[url] = app_package.App()
 
 
-class PyntaApp(BasePyntaApp):
-    pass
+class PyntaApp(Response):
+    
+    __metaclass__ = BasePyntaApp
+    
+    
+    def __call__(self, environ, start_response):
+        self.request = Request(environ)
+        self.environ = environ
+        self.body = self.get_body()
+        return super(PyntaApp, self).__call__(environ, start_response)
+    
+    
+    def get_body(self):
+        return NotImplemented
