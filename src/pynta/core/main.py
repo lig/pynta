@@ -11,4 +11,4 @@ class Pynta(URLMap):
 
         for url, app_name in settings.INSTALLED_APPS:
             app_package = try_import_module(app_name)
-            self[url] = app_package.App(settings)
+            self[url] = app_package.Application(settings)
