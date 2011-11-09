@@ -1,7 +1,10 @@
 from pynta.core import PyntaApp
+from pynta.templates import Mako
 
 
-class HiApp(PyntaApp):
+class HiApp(Mako, PyntaApp):
+
+    template = 'hi.html'
 
     def get(self, name):
-        return 'Hi %s!' % name
+        return {'name': u'%s' % name}

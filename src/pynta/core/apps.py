@@ -7,13 +7,7 @@ from urls import UrlMatch
 ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
 
 
-class BasePyntaApp(type):
-    pass
-
-
 class PyntaApp(Response):
-
-    __metaclass__ = BasePyntaApp
 
     urls = (
         (r'^$', 'self', {}, ''),
@@ -49,7 +43,7 @@ class PyntaApp(Response):
 
                 if self.request.method in ALLOWED_HTTP_METHODS:
                     http_method = getattr(self, self.request.method.lower())
-                    self.body = self.render(http_method(**params))
+                    self.text = self.render(http_method(**params))
                     return Response.__call__(self, environ, start_response)
                 else:
                     return HTTPServerError(
@@ -87,11 +81,6 @@ class PyntaApp(Response):
 
     def head(self, **kwargs):
         return None
-
-
-    def render(self, context):
-        if context is not None:
-            return '%s' % context
 
 
     def _url(self, host_pattern, url_pattern, app_class, params, name):
