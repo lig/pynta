@@ -48,8 +48,8 @@ class PyntaApp(Response):
             if url_match.app == 'self':
 
                 if self.request.method in ALLOWED_HTTP_METHODS:
-                    method = getattr(self, self.request.method.lower())
-                    self.body = self.render(method(**params))
+                    http_method = getattr(self, self.request.method.lower())
+                    self.body = self.render(http_method(**params))
                     return Response.__call__(self, environ, start_response)
                 else:
                     return HTTPServerError(
