@@ -1,9 +1,10 @@
 from pynta.core import PyntaApp
+from pynta.templates import PlainText
 
 from hi import HiApp
 
 
-class Application(PyntaApp):
+class Application(PlainText, PyntaApp):
 
     urls = (
         (r'^$', 'self', {}, 'hello'),
