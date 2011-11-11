@@ -1,9 +1,10 @@
 from mako.lookup import TemplateLookup
 
-from base import Renderer
+from base import RendererMixin
 
 
-class Mako(Renderer):
+class Mako(RendererMixin):
+    renderer_settings_name = 'TEMPLATES_MAKO'
 
     directories = None
     module_directory = None
