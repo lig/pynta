@@ -2,6 +2,8 @@
 * storage support
 * session support
 * authentication support
+* logging
+* app actions support
 * advanced form processing
 * generic administration interface
 * pynta stateful apps
