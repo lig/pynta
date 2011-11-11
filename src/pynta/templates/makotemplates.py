@@ -4,7 +4,7 @@ from base import RendererMixin
 
 
 class Mako(RendererMixin):
-    renderer_settings_name = 'TEMPLATES_MAKO'
+    settings_name = 'TEMPLATES_MAKO'
 
     directories = None
     module_directory = None

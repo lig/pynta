@@ -1,11 +1,11 @@
-from pynta.conf.provider import settings_provider_factory
+from pynta.conf.provider import SettingsProvider
 
 
 class StorageMixin(object):
 
-    __metaclass__ = settings_provider_factory('storage')
+    __metaclass__ = SettingsProvider
 
-    storage_settings_name = ''
+    settings_name = ''
 
     @property
     def storage(self):
@@ -13,7 +13,7 @@ class StorageMixin(object):
 
 
 class Anydbm(StorageMixin):
-    storage_settings_name = 'STORAGE_ANYDBM'
+    settings_name = 'STORAGE_ANYDBM'
 
     filename = None
     flag = 'r'

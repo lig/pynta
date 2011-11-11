@@ -1,11 +1,11 @@
-from pynta.conf.provider import settings_provider_factory
+from pynta.conf.provider import SettingsProvider
 
 
 class RendererMixin(object):
 
-    __metaclass__ = settings_provider_factory('renderer')
+    __metaclass__ = SettingsProvider
 
-    renderer_settings_name = ''
+    settings_name = ''
 
     def render(self, data):
         return NotImplemented
@@ -13,7 +13,7 @@ class RendererMixin(object):
 
 class PlainText(RendererMixin):
 
-    renderer_settings_name = 'TEMPLATES_PLAINTEXT'
+    settings_name = 'TEMPLATES_PLAINTEXT'
 
     def render(self, data):
         return u'%s' % data
