@@ -1,3 +1,5 @@
+* provide documentation
+* urls tag for templates  
 * support more template engines: [Cheetah](http://www.cheetahtemplate.org/), [Jinja2](http://jinja.pocoo.org/docs/) 
 * storage support
 * session support
