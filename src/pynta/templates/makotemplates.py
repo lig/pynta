@@ -28,6 +28,8 @@ class Mako(RendererMixin):
     input_encoding = None
     preprocessor = None
 
+    template = None
+
 
     def __init__(self, *args, **kwargs):
         super(Mako, self).__init__(*args, **kwargs)
