@@ -8,8 +8,8 @@ class Application(PlainText, PyntaApp):
 
     urls = (
         (r'^$', 'self', {}, 'hello'),
-        (r'^hi/$', HiApp, {'name': 'pal'}, 'hi'),
-        (r'^hi/(?P<name>\w+)/$', HiApp, {}, 'hi'),
+        (r'^(?P<host>[^:]*)', r'^hi/$', HiApp, {'name': 'pal'}, 'hi'),
+        (r'^(?P<host>[^:]*)', r'^hi/(?P<name>\w+)/$', HiApp, {}, 'hi'),
     )
 
     def get(self):

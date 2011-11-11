@@ -6,5 +6,5 @@ class HiApp(Mako, PyntaApp):
 
     template = 'hi.html'
 
-    def get(self, name):
-        return {'name': u'%s' % name}
+    def get(self, name, host):
+        return {'name': u'%s' % name, 'host': u'%s' % host}
