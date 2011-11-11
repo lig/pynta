@@ -7,7 +7,7 @@ INSTALLED_APPS = (
     ('/', 'example_app'),
 )
 
-RENDERER_MAKO = {
+TEMPLATES_MAKO = {
     'directories': [
         os.path.join(PROJECT_ROOT, 'templates')
     ]
