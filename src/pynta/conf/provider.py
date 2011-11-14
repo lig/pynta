@@ -1,36 +1,44 @@
-def settings_provider_factory(section_name):
+class SettingsProvider(type):
 
-    class SettingsProvider(type):
+    handle_settings = ()
 
-        def __new__(cls, name, bases, args):
-            from pynta.conf import settings
+    def __new__(cls, name, bases, args):
+        from pynta.conf import settings
 
-            section_settings_name = args.get('%s_settings_name' % section_name)
+        # for all handled settings we will take defaults from provided class,
+        # apply project settings on it, apply resolved app settings and then
+        # instantiate appropriated app settings properties
 
-            if section_settings_name:
-                # Base I'm. Just project settings I need.
-                section_settings = getattr(settings, section_settings_name, {})
-            else:
-                # find base settings name 
-                section_bases = filter(
-                    lambda base: hasattr(base,
-                        '%s_settings_name' % section_name),
-                    bases)
+        new_class = type.__new__(cls, name, bases, args)
 
-                if section_bases:
-                    # we have settings
-                    section_settings_name = getattr(section_bases[0],
-                        '%s_settings_name' % section_name)
-                    section_settings = getattr(settings, section_settings_name,
-                        {})
-                    # update section_settings with my args
-                    section_settings.update(args)
-                else:
-                    section_settings = {}
+        for section_name in cls.handle_settings:
 
-            # update args with calculated settings
-            args.update(section_settings)
+            if hasattr(new_class, section_name):
+                # defaults
+                section_class = getattr(new_class, section_name)
+                section_class_name = '%s_settings' % section_name
+                section_settings = getattr(section_class,
+                    section_class_name).__dict__
 
-            return type.__new__(cls, name, bases, args)
+                # project settings
+                settings_name = section_class.settings_name
+                project_settings = getattr(settings, settings_name, {})
+                section_settings.update(project_settings)
 
-    return SettingsProvider
+                # app class settings
+                class_settings = getattr(new_class, section_class_name, {})
+                class_settings = class_settings and class_settings.__dict__
+                section_settings.update(class_settings)
+
+                # sanitize and store section settings
+                app_settings = {}
+                for key in section_settings:
+                    if not key.startswith('_'):
+                        app_settings[key] = section_settings[key]
+                del section_settings
+
+                # attach settings to app as property
+                setattr(new_class, section_class_name,
+                    type(section_class_name, (), app_settings)())
+
+        return new_class
