@@ -12,3 +12,8 @@ TEMPLATES_MAKO = {
         os.path.join(PROJECT_ROOT, 'templates')
     ]
 }
+
+STORAGE_ANYDBM = {
+    'flag': 'n',
+    'filename': 'example.db'
+}
