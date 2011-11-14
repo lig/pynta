@@ -1,18 +1,32 @@
 from webob import Request, Response
 from webob.exc import HTTPServerError, HTTPNotFound
 
+from pynta.conf.provider import SettingsProvider
+from pynta.storage import Anydbm
+from pynta.templates import PlainText
+
 from urls import UrlMatch
 
 
 ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
 
 
+class PyntaAppBase(SettingsProvider):
+
+    handle_settings = 'templates', 'storage'
+
+
 class PyntaApp(Response):
+
+    __metaclass__ = PyntaAppBase
 
     urls = (
         (r'^$', 'self', {}, ''),
     )
-
+    # @note: default templates will be Mako in stable
+    templates = PlainText
+    # @note: default storage will be MongoDB in stable
+    storage = Anydbm
 
     def __init__(self, settings, *args, **kwargs):
         super(PyntaApp, self).__init__(*args, **kwargs)

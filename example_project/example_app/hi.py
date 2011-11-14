@@ -2,7 +2,9 @@ from pynta.core import PyntaApp
 from pynta.templates import Mako
 
 
-class HiApp(Mako, PyntaApp):
+class HiApp(PyntaApp):
+
+    templates = Mako
 
     template = 'hi.html'
 

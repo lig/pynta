@@ -3,6 +3,10 @@ from argparse import ArgumentParser
 from paste import httpserver
 from paste import reloader
 
+# settings must be set before any pynta package processing
+from conf import Settings
+settings = Settings()
+
 from core import Pynta
 
 argument_parser = ArgumentParser()
