@@ -13,8 +13,12 @@ class Application(PyntaApp):
         (r'^(?P<host>[^:]*)', r'^hi/(?P<name>\w+)/$', HiApp, {}, 'hi'),
     )
 
+    templates = PlainText
+    storage = Anydbm
+
     class storage_settings:
         filename = 'local.db'
+
 
     def get(self):
         return 'Hello!'
