@@ -2,7 +2,6 @@
 * urls tag for templates  
 * support more template engines: [Cheetah](http://www.cheetahtemplate.org/), [Jinja2](http://jinja.pocoo.org/docs/) 
 * support for SQLAlchemy storage
-* support for MongoDB storage
 * session support
 * authentication support
 * logging
