@@ -5,7 +5,7 @@ class Storage(object):
 
     settings_name = ''
 
-    class storage_settings:
+    class settings:
         pass
 
 
@@ -13,7 +13,7 @@ class Anydbm(Storage):
 
     settings_name = 'STORAGE_ANYDBM'
 
-    class storage_settings:
+    class settings:
         filename = None
         flag = 'r'
         mode = 0666
@@ -21,8 +21,8 @@ class Anydbm(Storage):
 
     def __init__(self, *args, **kwargs):
         super(Anydbm, self).__init__(*args, **kwargs)
-        self.db = anydbm.open(self.storage_settings.filename,
-            self.storage_settings.flag, self.storage_settings.mode)
+        self.db = anydbm.open(self.settings.filename, self.settings.flag,
+            self.settings.mode)
 
 
     def __del__(self):

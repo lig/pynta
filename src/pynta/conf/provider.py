@@ -20,9 +20,7 @@ class SettingsProvider(type):
             if hasattr(new_class, section_name):
                 # defaults
                 section_class = getattr(new_class, section_name)
-                section_class_name = '%s_settings' % section_name
-                section_settings = getattr(section_class,
-                    section_class_name).__dict__
+                section_settings = section_class.settings.__dict__
 
                 # project settings
                 settings_name = section_class.settings_name
@@ -30,19 +28,22 @@ class SettingsProvider(type):
                 section_settings.update(project_settings)
 
                 # app class settings
-                class_settings = getattr(new_class, section_class_name, {})
+                section_settings_name = '%s_settings' % section_name
+                class_settings = getattr(new_class, section_settings_name, {})
                 class_settings = class_settings and class_settings.__dict__
                 section_settings.update(class_settings)
 
-                # sanitize and store section settings
-                app_settings = {}
+                # sanitize settings
+                instance_settings = {}
                 for key in section_settings:
                     if not key.startswith('_'):
-                        app_settings[key] = section_settings[key]
+                        instance_settings[key] = section_settings[key]
                 del section_settings
 
-                # attach settings to app as property
-                setattr(new_class, section_class_name,
-                    type(section_class_name, (), app_settings)())
+                # initialize appropriate app property
+                section_instance = section_class()
+                section_instance.settings = type(section_settings_name, (),
+                    instance_settings)
+                setattr(new_class, section_name, section_instance)
 
         return new_class

@@ -7,7 +7,7 @@ class Mako(Renderer):
 
     settings_name = 'TEMPLATES_MAKO'
 
-    class templates_settings:
+    class settings:
         directories = None
         module_directory = None
         filesystem_checks = True
@@ -36,29 +36,29 @@ class Mako(Renderer):
     def __init__(self, *args, **kwargs):
         super(Mako, self).__init__(*args, **kwargs)
         self.template_lookup = TemplateLookup(
-            directories = self.templates_settings.directories,
-            module_directory = self.templates_settings.module_directory,
-            filesystem_checks = self.templates_settings.filesystem_checks,
-            collection_size = self.templates_settings.collection_size,
-            format_exceptions = self.templates_settings.format_exceptions,
-            error_handler = self.templates_settings.error_handler,
-            disable_unicode = self.templates_settings.disable_unicode,
-            bytestring_passthrough = \
-                self.templates_settings.bytestring_passthrough,
-            output_encoding = self.templates_settings.output_encoding,
-            encoding_errors = self.templates_settings.encoding_errors,
-            cache_type = self.templates_settings.cache_type,
-            cache_dir = self.templates_settings.cache_dir,
-            cache_url = self.templates_settings.cache_url,
-            cache_enabled = self.templates_settings.cache_url,
-            modulename_callable = self.templates_settings.modulename_callable,
-            default_filters = self.templates_settings.default_filters,
-            buffer_filters = self.templates_settings.buffer_filters,
-            strict_undefined = self.templates_settings.strict_undefined,
-            imports = self.templates_settings.imports,
-            input_encoding = self.templates_settings.input_encoding,
-            preprocessor = self.templates_settings.preprocessor)
+            directories=self.settings.directories,
+            module_directory=self.settings.module_directory,
+            filesystem_checks=self.settings.filesystem_checks,
+            collection_size=self.settings.collection_size,
+            format_exceptions=self.settings.format_exceptions,
+            error_handler=self.settings.error_handler,
+            disable_unicode=self.settings.disable_unicode,
+            bytestring_passthrough=self.settings.bytestring_passthrough,
+            output_encoding=self.settings.output_encoding,
+            encoding_errors=self.settings.encoding_errors,
+            cache_type=self.settings.cache_type,
+            cache_dir=self.settings.cache_dir,
+            cache_url=self.settings.cache_url,
+            cache_enabled=self.settings.cache_url,
+            modulename_callable=self.settings.modulename_callable,
+            default_filters=self.settings.default_filters,
+            buffer_filters=self.settings.buffer_filters,
+            strict_undefined=self.settings.strict_undefined,
+            imports=self.settings.imports,
+            input_encoding=self.settings.input_encoding,
+            preprocessor=self.settings.preprocessor)
 
 
     def render(self, data):
-        return self.template_lookup.get_template(self.template).render(**data)
+        return self.template_lookup.get_template(
+            self.settings.template).render(**data)

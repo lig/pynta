@@ -2,7 +2,7 @@ class Renderer(object):
 
     settings_name = ''
 
-    class templates_settings:
+    class settings:
         pass
 
     def render(self, data):
