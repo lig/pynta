@@ -1,5 +1,9 @@
 class SettingsProvider(type):
-
+    """
+    Provider for various settings sections. Allows embedding of section based
+    settings slices depending on templates, storage or any other settings
+    depended classes connected to app class.
+    """
     handle_settings = ()
 
     def __new__(cls, name, bases, args):
