@@ -1,13 +1,12 @@
+import anydbm
+
+
 class Storage(object):
 
     settings_name = ''
 
     class storage_settings:
         pass
-
-    @property
-    def storage(self):
-        NotImplemented
 
 
 class Anydbm(Storage):
@@ -22,16 +21,10 @@ class Anydbm(Storage):
 
     def __init__(self, *args, **kwargs):
         super(Anydbm, self).__init__(*args, **kwargs)
-        import anydbm
-        self._db = anydbm.open(self.storage_settings.filename,
+        self.db = anydbm.open(self.storage_settings.filename,
             self.storage_settings.flag, self.storage_settings.mode)
 
 
-    @property
-    def storage(self):
-        return self._db
-
-
     def __del__(self):
-        self._db.close()
+        self.db.close()
         super(Anydbm, self).__del__()

@@ -4,6 +4,7 @@ from base import Renderer
 
 
 class Mako(Renderer):
+
     settings_name = 'TEMPLATES_MAKO'
 
     class templates_settings:
@@ -29,7 +30,7 @@ class Mako(Renderer):
         input_encoding = None
         preprocessor = None
 
-    template = None
+        template = None
 
 
     def __init__(self, *args, **kwargs):

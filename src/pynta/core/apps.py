@@ -106,3 +106,6 @@ class PyntaApp(Response):
 
         return UrlMatch(host_pattern=host_pattern, url_pattern=url_pattern,
             app=app, params=params, name=name)
+
+    def render(self, data):
+        return self.templates.render(data)
