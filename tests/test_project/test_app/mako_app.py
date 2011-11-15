@@ -2,9 +2,12 @@ from pynta.core import PyntaApp
 from pynta.templates import Mako
 
 
-class MakoApp(Mako, PyntaApp):
+class MakoApp(PyntaApp):
 
-    template = 'test.mako.html'
+    templates = Mako
+
+    class templates_settings:
+        template = 'test.mako.html'
 
     def get(self):
         return {'test': 'test output'}
