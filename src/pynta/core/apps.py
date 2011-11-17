@@ -50,8 +50,7 @@ class PyntaApp(Response):
             if url_match.app == 'self':
 
                 if self.request.method in ALLOWED_HTTP_METHODS:
-                    http_method = getattr(self, self.request.method.lower())
-                    self.text = self.render(http_method(**params))
+                    self.dispatch(params)
                     return Response.__call__(self, environ, start_response)
                 else:
                     return HTTPServerError(
@@ -68,6 +67,16 @@ class PyntaApp(Response):
         else:
             return HTTPNotFound('%s is not found on this server' %
                 self.request.path)(environ, start_response)
+
+
+    def dispatch(self, params):
+        http_method = getattr(self, self.request.method.lower())
+        data = http_method(**params)
+
+        if hasattr(self, 'templates'):
+            self.text = self.templates.render(data)
+        elif isinstance(data, unicode):
+            self.text = data
 
 
     def app_by_url(self):
@@ -100,6 +109,3 @@ class PyntaApp(Response):
 
         return UrlMatch(host_pattern=host_pattern, url_pattern=url_pattern,
             app=app, params=params, name=name)
-
-    def render(self, data):
-        return self.templates.render(data)
