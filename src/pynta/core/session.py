@@ -1,12 +1,20 @@
-class _Session(object):
-    pass
+from paste.util.import_string import simple_import
+
+from pynta.conf import settings
+from pynta.conf.provider import SettingsProvider
 
 
-class LazySession(object):
+class SessionBase(SettingsProvider):
 
-    def __init__(self, *args, **kwargs):
-        super(LazySession, self).__init__(*args, **kwargs)
-        self.__dict__.update(kwargs)
+    handle_settings = ('storage',)
+
+    def __new__(cls, name, bases, args):
+        storage_name = settings.SESSION_STORAGE
+        storage_class = simple_import(storage_name)
+        args.update({'storage': storage_class})
+        return SettingsProvider.__new__(cls, name, bases, args)
 
 
-Session = LazySession
+class Session(object):
+
+    __metaclass__ = SessionBase
