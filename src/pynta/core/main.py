@@ -1,5 +1,5 @@
 from paste.urlmap import URLMap
-from paste.util.import_string import try_import_module
+from paste.util.import_string import simple_import
 
 from pynta.conf import settings
 
@@ -10,5 +10,16 @@ class Pynta(URLMap):
         URLMap.__init__(self)
 
         for url, app_name in settings.INSTALLED_APPS:
-            app_package = try_import_module(app_name)
-            self[url] = app_package.Application(settings)
+            app = simple_import(app_name)
+
+            if hasattr(app, 'Application'):
+                app_class = app.Application
+            else:
+                app_class = app
+
+            if app_class:
+                # @todo: allow use of any wsgi app
+                self[url] = app_class(settings)
+            else:
+                print ('Ignoring %s from INSTALLED_APPS setting: cannot find '
+                    'app class.' % app_name)

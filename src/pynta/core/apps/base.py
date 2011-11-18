@@ -2,8 +2,7 @@ from webob import Request, Response
 from webob.exc import HTTPServerError, HTTPNotFound
 
 from pynta.conf.provider import SettingsProvider
-
-from urls import UrlMatch
+from pynta.core.urls import UrlMatch
 
 
 ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
