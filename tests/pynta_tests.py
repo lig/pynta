@@ -33,6 +33,7 @@ class PyntaAppTest(unittest.TestCase):
 
 
 suite = unittest.TestSuite([
+    PyntaAppTest(app_class=Application, etalon_output=''),
     PyntaAppTest(app_class=PlaintextApp, etalon_output="['test output']"),
     PyntaAppTest(app_class=MakoApp, etalon_output='test output\n'),
 ])
