@@ -1,12 +1,12 @@
 from paste.urlmap import URLMap
 from paste.util.import_string import simple_import
 
-from pynta.conf import settings
-
 
 class Pynta(URLMap):
 
     def __init__(self):
+        from pynta.conf import settings
+
         URLMap.__init__(self)
 
         for url, app_name in settings.INSTALLED_APPS:
