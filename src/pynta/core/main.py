@@ -19,7 +19,7 @@ class Pynta(URLMap):
 
             if app_class:
                 # @todo: allow use of any wsgi app
-                self[url] = app_class(settings)
+                self[url] = app_class()
             else:
                 print ('Ignoring %s from INSTALLED_APPS setting: cannot find '
                     'app class.' % app_name)

@@ -23,7 +23,7 @@ class PyntaAppTest(unittest.TestCase):
         super(PyntaAppTest, self).__init__(*args, **kwargs)
 
     def setUp(self):
-        self.app = self.app_class(settings)
+        self.app = self.app_class()
 
     def runTest(self):
         request = Request({})

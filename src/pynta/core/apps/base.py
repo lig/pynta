@@ -21,9 +21,8 @@ class PyntaApp(Response):
         (r'^$', 'self', {}, ''),
     )
 
-    def __init__(self, settings, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(PyntaApp, self).__init__(*args, **kwargs)
-        self.settings = settings
 
         urls = []
         for url in self.urls:
@@ -104,7 +103,7 @@ class PyntaApp(Response):
         if app_class == 'self':
             app = 'self'
         else:
-            app = app_class(self.settings)
+            app = app_class()
 
         return UrlMatch(host_pattern=host_pattern, url_pattern=url_pattern,
             app=app, params=params, name=name)
