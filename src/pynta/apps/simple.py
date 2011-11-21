@@ -1,7 +1,7 @@
 import os, mimetypes
 
 from pynta.conf import settings
-from pynta.core import PyntaApp
+from pynta.apps import PyntaApp
 
 
 class Static(PyntaApp):

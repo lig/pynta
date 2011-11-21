@@ -1,13 +1,6 @@
-#!/usr/bin/env python
-import os, sys
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
-
 import unittest
 
 from webob import Request
-
-from pynta.conf import Settings
-settings = Settings('test_project.settings')
 
 from test_project.test_app import Application
 from test_project.test_app.plaintext_app import PlaintextApp
@@ -39,8 +32,3 @@ suite = unittest.TestSuite([
     PyntaAppTest(app_class=MakoApp, etalon_output='test output\n'),
     PyntaAppTest(app_class=MongodbApp, etalon_output='test output\n'),
 ])
-
-
-if __name__ == '__main__':
-    runner = unittest.runner.TextTestRunner()
-    runner.run(suite)

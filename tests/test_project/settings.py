@@ -8,3 +8,10 @@ TEMPLATES_MAKO = {
         os.path.join(PROJECT_ROOT, 'templates')
     ]
 }
+
+STORAGE_ANYDBM = {
+    'flag': 'c',
+    'filename': 'test.db'
+}
+
+SESSION_STORAGE = 'pynta.storage.Anydbm'

@@ -66,3 +66,7 @@ class Mongodb(Storage):
 
     def delete(self, tag, key):
         self.db[tag].remove(key)
+
+
+    def get_free_key(self, tag):
+        return self.db[tag].save({})

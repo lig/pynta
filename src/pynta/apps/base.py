@@ -2,8 +2,8 @@ from webob import Request, Response
 from webob.exc import HTTPServerError, HTTPNotFound
 
 from pynta.conf.provider import SettingsProvider
+from pynta.core.session import LazySession, Session
 from pynta.core.urls import UrlMatch
-
 
 ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
 
@@ -68,6 +68,8 @@ class PyntaApp(Response):
 
 
     def dispatch(self, params):
+        self.init_session()
+
         http_method = getattr(self, self.request.method.lower())
         data = http_method(**params)
 
@@ -75,6 +77,23 @@ class PyntaApp(Response):
             self.text = self.templates.render(data)
         elif isinstance(data, unicode):
             self.text = data
+
+        self.save_session()
+
+
+    def init_session(self):
+        session_key = self.request.cookies.get('PYNTA_SESSION_ID')
+        self.session = LazySession(session_key)
+
+
+    def save_session(self):
+
+        if isinstance(self.session, Session):
+
+            if self.session.key:
+                self.set_cookie('PYNTA_SESSION_ID', self.session.key)
+            else:
+                self.delete_cookie('PYNTA_SESSION_ID')
 
 
     def app_by_url(self):
