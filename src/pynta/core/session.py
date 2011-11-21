@@ -33,14 +33,13 @@ class Session(object):
 
         else:
             # new session
-            self.key = self.storage.get_free_key()
+            self.key = self.storage.get_free_key('session')
             self.data = {}
             self.save()
 
 
     def __del__(self):
         self.save()
-        super(Session, self).__del__()
 
 
     def load(self):
@@ -80,20 +79,29 @@ class LazySession(object):
     """
 
     real_session_class = Session
-    trigger_method_names = ('load', 'delete', '__getitem__', '__setitem__',
-        '__delitem__')
 
     def __init__(self, session_key=None):
         self.key = session_key
 
-    def __getattr__(self, name):
-
-        if name in self.trigger_method_names:
-            self.__class__ = self.real_session_class
-            self.__init__(self.key)
-            return getattr(self, name)
-        else:
-            return self.do_nothing()
-
-    def do_nothing(self, *args, **kwargs):
+    def save(self):
         pass
+
+    def _accessed(self, method_name, args=[], kwargs={}):
+        self.__class__ = self.real_session_class
+        self.__init__(self.key)
+        return getattr(self, method_name)(*args, **kwargs)
+
+    def load(self):
+        return self._accessed('load')
+
+    def delete(self):
+        return self._accessed('delete')
+
+    def __getitem__(self, name):
+        return self._accessed('__getitem__', [name])
+
+    def __setitem__(self, name, value):
+        return self._accessed('__setitem__', [name, value])
+
+    def __delitem__(self, name):
+        return self._accessed('__delitem__', [name])
