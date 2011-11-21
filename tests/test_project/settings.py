@@ -8,3 +8,5 @@ TEMPLATES_MAKO = {
         os.path.join(PROJECT_ROOT, 'templates')
     ]
 }
+
+SESSION_STORAGE = 'pynta.storage.Mongodb'

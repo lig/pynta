@@ -1,6 +1,6 @@
 import random
 
-from pynta.core import PyntaApp
+from pynta.apps import PyntaApp
 from pynta.templates import Mako
 from pynta.storage import Mongodb
 

@@ -7,7 +7,7 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 
 INSTALLED_APPS = (
     ('/', 'example_app'),
-    ('/media/', 'pynta.core.apps.simple.Static'),
+    ('/media/', 'pynta.apps.simple.Static'),
 )
 
 TEMPLATES_MAKO = {
@@ -20,3 +20,5 @@ STORAGE_ANYDBM = {
     'flag': 'n',
     'filename': 'example.db'
 }
+
+SESSION_STORAGE = 'pynta.storage.Anydbm'
