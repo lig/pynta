@@ -33,6 +33,7 @@ class Session(object):
 
         else:
             # new session
+            self.key = self.storage.get_free_key()
             self.data = {}
             self.save()
 
@@ -70,3 +71,29 @@ class Session(object):
 
     def __delitem__(self, name):
         del self.data[name]
+
+
+class LazySession(object):
+    """
+    Session wrapper that will not access session storage until session data
+    will be accessed.
+    """
+
+    real_session_class = Session
+    trigger_method_names = ('load', 'delete', '__getitem__', '__setitem__',
+        '__delitem__')
+
+    def __init__(self, session_key=None):
+        self.key = session_key
+
+    def __getattr__(self, name):
+
+        if name in self.trigger_method_names:
+            self.__class__ = self.real_session_class
+            self.__init__(self.key)
+            return getattr(self, name)
+        else:
+            return self.do_nothing()
+
+    def do_nothing(self, *args, **kwargs):
+        pass
