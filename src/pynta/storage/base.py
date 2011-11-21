@@ -1,4 +1,5 @@
 import anydbm
+from cPickle import dumps, loads
 from uuid import uuid4
 
 
@@ -68,11 +69,11 @@ class Anydbm(Storage):
 
 
     def get(self, tag, key):
-        return self.db[self._get_object_key(tag, key)]
+        return loads(self.db[self._get_object_key(tag, key)])
 
 
     def put(self, tag, key, obj):
-        self.db[self._get_object_key(tag, key)] = obj
+        self.db[self._get_object_key(tag, key)] = dumps(obj)
 
 
     def delete(self, tag, key):
@@ -80,4 +81,4 @@ class Anydbm(Storage):
 
 
     def _get_object_key(self, tag, key):
-        return '%s+%s' % (tag, key)
+        return str('%s+%s' % (tag, key))
