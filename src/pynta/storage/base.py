@@ -1,4 +1,5 @@
 import anydbm
+from uuid import uuid4
 
 
 class Storage(object):
@@ -31,6 +32,18 @@ class Storage(object):
         Returned value depends on storage realization.
         """
         return NotImplemented
+
+    def get_free_key(self, tag):
+        """
+        Returns free key for tag `tag`.
+        It is normal for storage to create new object for this key to prevent
+        this key usage. Thus application is encouraged to use this key and do
+        not throw it away if using this method.
+
+        Default implementation uses `uuid.uuid4` for key generation without
+        checking if this key is free really.
+        """
+        return uuid4().hex
 
 
 class Anydbm(Storage):
