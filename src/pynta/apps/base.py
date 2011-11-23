@@ -68,16 +68,20 @@ class PyntaApp(Response):
 
 
     def dispatch(self, params):
+        # init session
         self.init_session()
 
+        # choose app method according to http method
         http_method = getattr(self, self.request.method.lower())
         data = http_method(**params)
 
+        # use template renderer if app has it
         if hasattr(self, 'templates'):
             self.text = self.templates.render(data)
         elif isinstance(data, unicode):
             self.text = data
 
+        # save session
         self.save_session()
 
 
