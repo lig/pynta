@@ -89,7 +89,7 @@ class PyntaApp(Response):
 
         # use template renderer if app has it
         if hasattr(self, 'templates'):
-            self.text = self.templates.render(data)
+            self.text = unicode(self.templates.render(data))
         elif isinstance(data, unicode):
             self.text = data
 
