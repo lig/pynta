@@ -76,7 +76,10 @@ class PyntaApp(Response):
             # choose app method by action name
             method = getattr(self, '_%s' % params['_action'], None)
 
-            if not method:
+            if method:
+                # del '_action' parameter from params
+                del params['_action']
+            else:
                 # raise server error if we have no requested method
                 raise HTTPServerError()
 
