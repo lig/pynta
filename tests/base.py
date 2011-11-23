@@ -6,6 +6,7 @@ from test_project.test_app import Application
 from test_project.test_app.plaintext_app import PlaintextApp
 from test_project.test_app.mako_app import MakoApp
 from test_project.test_app.mongodb_app import MongodbApp
+from test_project.test_app.mongokit_app import MongokitApp
 
 
 class PyntaAppTest(unittest.TestCase):
@@ -31,4 +32,5 @@ suite = unittest.TestSuite([
     PyntaAppTest(app_class=PlaintextApp, etalon_output="['test output']"),
     PyntaAppTest(app_class=MakoApp, etalon_output='test output\n'),
     PyntaAppTest(app_class=MongodbApp, etalon_output='test output\n'),
+    PyntaAppTest(app_class=MongokitApp, etalon_output='test output\n'),
 ])
