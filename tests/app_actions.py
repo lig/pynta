@@ -1,7 +1,5 @@
 import unittest
 
-from webob import Request
-
 from test_project.test_app.action_app import ActionApp
 
 
