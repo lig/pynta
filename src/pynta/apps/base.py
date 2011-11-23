@@ -68,16 +68,35 @@ class PyntaApp(Response):
 
 
     def dispatch(self, params):
+        # init session
         self.init_session()
 
-        http_method = getattr(self, self.request.method.lower())
-        data = http_method(**params)
+        # check for action
+        if '_action' in params:
+            # choose app method by action name
+            method = getattr(self, '_%s' % params['_action'], None)
 
+            if method:
+                # del '_action' parameter from params
+                del params['_action']
+            else:
+                # raise server error if we have no requested method
+                raise HTTPServerError()
+
+        else:
+            # fall back to choose app method according to http method
+            method = getattr(self, self.request.method.lower())
+
+        # get data from method
+        data = method(**params)
+
+        # use template renderer if app has it
         if hasattr(self, 'templates'):
-            self.text = self.templates.render(data)
+            self.text = unicode(self.templates.render(data))
         elif isinstance(data, unicode):
             self.text = data
 
+        # save session
         self.save_session()
 
 
