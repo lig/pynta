@@ -1,6 +1,7 @@
 from webob import Request, Response
 from webob.exc import HTTPServerError, HTTPNotFound, HTTPMethodNotAllowed
 
+from pynta.apps.decorators import action
 from pynta.conf.provider import SettingsProvider
 from pynta.core.session import LazySession, Session
 from pynta.core.urls import UrlMatch
@@ -122,47 +123,11 @@ class PyntaApp(Response):
                 return url_match
 
 
-    @staticmethod
-    def require_method(*method_names):
-
-        def decorator(func):
-
-            def wrapper(self, **kwargs):
-
-                if self.request.method in method_names:
-                    return func(self, **kwargs)
-
-                else:
-                    raise HTTPMethodNotAllowed()
-
-            return wrapper
-
-        return decorator
-
-
-    @staticmethod
-    def action(func):
-
-        def wrapper(self, **kwargs):
-            self.params = kwargs
-            self.context = self.get_context()
-            result = func(self, **kwargs)
-
-            if isinstance(result, dict):
-                self.context.update(result)
-                return self.context
-
-            else:
-                return result
-
-        return wrapper
-
-
     def get_context(self):
         return self.params
 
 
-    @PyntaApp.action
+    @action
     def get(self, **kwargs):
         return {}
 
