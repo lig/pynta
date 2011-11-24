@@ -70,3 +70,7 @@ class Mongodb(Storage):
 
     def get_free_key(self, tag):
         return self.db[tag].save({})
+
+
+    def get_dataset(self, tag):
+        return self.db[tag].find()

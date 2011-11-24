@@ -1,11 +1,9 @@
 from webob import Request, Response
-from webob.exc import HTTPServerError, HTTPNotFound
+from webob.exc import HTTPServerError, HTTPNotFound, HTTPMethodNotAllowed
 
 from pynta.conf.provider import SettingsProvider
 from pynta.core.session import LazySession, Session
 from pynta.core.urls import UrlMatch
-
-ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
 
 
 class PyntaAppBase(SettingsProvider):
@@ -16,6 +14,8 @@ class PyntaAppBase(SettingsProvider):
 class PyntaApp(Response):
 
     __metaclass__ = PyntaAppBase
+
+    ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
 
     urls = (
         (r'^$', 'self', {}, ''),
@@ -47,13 +47,11 @@ class PyntaApp(Response):
 
             if url_match.app == 'self':
 
-                if self.request.method in ALLOWED_HTTP_METHODS:
+                if self.request.method in self.ALLOWED_HTTP_METHODS:
                     self.dispatch(params)
                     return Response.__call__(self, environ, start_response)
                 else:
-                    return HTTPServerError(
-                        'Method %s is not allowed on this server' %
-                            self.request.method)(environ, start_response)
+                    return HTTPMethodNotAllowed()(environ, start_response)
 
             else:
                 environ['SCRIPT_NAME'] += url_match.app_url
@@ -124,8 +122,49 @@ class PyntaApp(Response):
                 return url_match
 
 
+    @staticmethod
+    def require_method(*method_names):
+
+        def decorator(func):
+
+            def wrapper(self, **kwargs):
+
+                if self.request.method in method_names:
+                    return func(self, **kwargs)
+
+                else:
+                    raise HTTPMethodNotAllowed()
+
+            return wrapper
+
+        return decorator
+
+
+    @staticmethod
+    def action(func):
+
+        def wrapper(self, **kwargs):
+            self.params = kwargs
+            self.context = self.get_context()
+            result = func(self, **kwargs)
+
+            if isinstance(result, dict):
+                self.context.update(result)
+                return self.context
+
+            else:
+                return result
+
+        return wrapper
+
+
+    def get_context(self):
+        return self.params
+
+
+    @PyntaApp.action
     def get(self, **kwargs):
-        return kwargs
+        return {}
 
 
     def post(self, **kwargs):
