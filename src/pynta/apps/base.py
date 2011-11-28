@@ -1,7 +1,6 @@
 from webob import Request, Response
 from webob.exc import HTTPServerError, HTTPNotFound, HTTPMethodNotAllowed
 
-from pynta.apps.decorators import action
 from pynta.conf.provider import SettingsProvider
 from pynta.core.session import LazySession, Session
 from pynta.core.urls import UrlMatch
@@ -73,7 +72,7 @@ class PyntaApp(Response):
         # check for action
         if '_action' in params:
             # choose app method by action name
-            method = getattr(self, '_%s' % params['_action'], None)
+            method = getattr(self, 'do_%s' % params['_action'], None)
 
             if method:
                 # del '_action' parameter from params
@@ -124,12 +123,11 @@ class PyntaApp(Response):
 
 
     def get_context(self):
-        return self.params
+        return NotImplemented
 
 
-    @action
     def get(self, **kwargs):
-        return {}
+        return self.get_context(**kwargs)
 
 
     def post(self, **kwargs):

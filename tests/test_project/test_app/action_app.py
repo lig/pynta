@@ -14,8 +14,8 @@ class ActionApp(PyntaApp):
         template = 'test.mako.html'
 
 
-    def _list(self, parameter):
+    def do_list(self, parameter):
         return {'test': u'list %s' % parameter}
 
-    def _detail(self, parameter):
+    def do_detail(self, parameter):
         return {'test': u'detail %s' % parameter}

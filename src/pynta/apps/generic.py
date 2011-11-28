@@ -1,5 +1,5 @@
 from pynta.apps import PyntaApp
-from pynta.apps.decorators import action, require_method
+from pynta.apps.decorators import require_method
 from pynta.storage.base import Storage
 
 
@@ -43,33 +43,28 @@ class CRUDApp(PyntaApp):
 
 
     @require_method('POST')
-    @action
-    def _create(self):
+    def do_create(self):
         obj = self.create_object(self.request.POST)
         return {self.object_name: obj}
 
 
-    @action
-    def _list(self):
+    def do_list(self):
         dataset = self.get_dataset()
         return {'%s_list' % self.object_name: dataset}
 
 
-    @action
-    def _detail(self, slug):
+    def do_detail(self, slug):
         obj = self.get_object(slug)
         return {self.object_name: obj}
 
 
     @require_method('POST')
-    @action
-    def _update(self, slug):
+    def do_update(self, slug):
         obj = self.update_object(slug, self.request.POST)
         return {self.object_name: obj}
 
 
     @require_method('POST')
-    @action
-    def _delete(self, slug):
+    def do_delete(self, slug):
         self.delete_object(slug)
         return {}
