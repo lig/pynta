@@ -19,6 +19,10 @@ class Paginator(Sequence):
         self.page_size = page_size or 0
 
 
+    def get_page(self, page_num):
+        return self[int(page_num) - 1]
+
+
     def __getitem__(self, index):
         page_start = index * self.page_size
         page_end = min(page_start + self.page_size, len(self.data))
