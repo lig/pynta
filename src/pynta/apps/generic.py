@@ -15,7 +15,6 @@ class CRUDApp(PyntaApp):
     )
 
     object_name = 'object'
-    dataset = None
     storage = Storage
 
 
