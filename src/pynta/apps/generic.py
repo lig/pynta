@@ -1,5 +1,6 @@
 from pynta.apps import PyntaApp
 from pynta.apps.decorators import require_method
+from pynta.core.paginator import Paginator
 from pynta.storage.base import Storage
 
 
@@ -16,6 +17,7 @@ class CRUDApp(PyntaApp):
 
     object_name = 'object'
     storage = Storage
+    list_page_size = 20
 
 
     def create_object(self, object_data):
@@ -49,7 +51,9 @@ class CRUDApp(PyntaApp):
 
     def do_list(self):
         dataset = self.get_dataset()
-        return {'%s_list' % self.object_name: dataset}
+        paginator = Paginator(dataset, self.list_page_size)
+        page = paginator.get_page(self.request.GET.get('page', 1))
+        return {'%s_list' % self.object_name: page}
 
 
     def do_detail(self, slug):
