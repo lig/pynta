@@ -1,3 +1,5 @@
+from string import Template
+
 from webob import Request, Response
 from webob.exc import HTTPServerError, HTTPNotFound, HTTPMethodNotAllowed
 
@@ -72,7 +74,8 @@ class PyntaApp(Response):
         # check for action
         if '_action' in params:
             # choose app method by action name
-            method = getattr(self, 'do_%s' % params['_action'], None)
+            action_name = params['_action']
+            method = getattr(self, 'do_%s' % action_name, None)
 
             if method:
                 # del '_action' parameter from params
@@ -83,6 +86,7 @@ class PyntaApp(Response):
 
         else:
             # fall back to choose app method according to http method
+            action_name = None
             method = getattr(self, self.request.method.lower())
 
         # prepare context for method
@@ -92,6 +96,13 @@ class PyntaApp(Response):
 
         # use template renderer if app has it
         if hasattr(self, 'templates'):
+
+            if action_name and '$action' in self.templates_settings.template:
+                # choose template by action name
+                self.templates_settings.template = Template(
+                    self.templates_settings.template).substitute(
+                        action=action_name)
+
             self.text = unicode(self.templates.render(data))
         elif isinstance(data, unicode):
             self.text = data
