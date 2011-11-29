@@ -89,8 +89,8 @@ class Anydbm(Storage):
 
 
     def get_dataset(self, tag):
-        return {k: v for k, v in self.db.iteritems() if
-            k.startswith('%s+' % tag)}
+        return [{k: v} for k, v in self.db.iteritems() if
+            k.startswith('%s+' % tag)]
 
 
     def _get_object_key(self, tag, key):
