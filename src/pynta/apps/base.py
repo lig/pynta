@@ -96,14 +96,7 @@ class PyntaApp(Response):
 
         # use template renderer if app has it
         if hasattr(self, 'templates'):
-
-            if action_name and '$action' in self.templates.settings.template:
-                # choose template by action name
-                self.templates.settings.template = Template(
-                    self.templates.settings.template).substitute(
-                        action=action_name)
-
-            self.text = unicode(self.templates.render(data))
+            self.text = unicode(self.templates.render(data, action_name))
         elif isinstance(data, unicode):
             self.text = data
 
