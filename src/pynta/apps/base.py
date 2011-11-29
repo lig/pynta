@@ -57,7 +57,7 @@ class PyntaApp(Response):
 
             else:
                 environ['SCRIPT_NAME'] += url_match.app_url
-                environ['PATH_INFO'] = self.request.path_info[len(
+                environ['PATH_INFO'] = self.request.path_info.lstrip('/')[len(
                     url_match.app_url):]
                 environ['params'] = params
                 return url_match.app(environ, start_response)

@@ -1,5 +1,6 @@
 import re
 
+from pynta.utils.collections import filter_dict
 
 class UrlMatch(object):
 
@@ -12,7 +13,8 @@ class UrlMatch(object):
 
 
     def match(self, host, path):
-        # @todo: we need serious refactoring here.
+        # we will store any match result till the next match() invocation only
+        self.match_result = None
 
         params = self.default_params or {}
 
@@ -20,7 +22,7 @@ class UrlMatch(object):
             host_match = self.host_regex.match(host)
 
             if host_match:
-                params.update(host_match.groupdict())
+                params.update(filter_dict(host_match.groupdict()))
             else:
                 return False
 
@@ -28,10 +30,29 @@ class UrlMatch(object):
             url_match = self.url_regex.match(path)
 
             if url_match:
-                params.update(url_match.groupdict())
+                params.update(filter_dict(url_match.groupdict()))
             else:
                 return False
 
-        self.app_url = path[:url_match.end()]
-        self.params = params
+        if self.app == 'self':
+            # we already have correct app url and do not need to rewrite it
+            app_url = ''
+        else:
+            # put matched pat part into app url
+            app_url = path[:url_match.end()]
+
+        self.match_result = {
+            'app_url': app_url,
+            'params': params
+        }
         return True
+
+
+    @property
+    def app_url(self):
+        return self.match_result and self.match_result['app_url']
+
+
+    @property
+    def params(self):
+        return self.match_result and self.match_result['params']
