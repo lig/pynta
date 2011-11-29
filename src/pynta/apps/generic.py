@@ -48,25 +48,29 @@ class CRUDApp(PyntaApp):
     @require_method('POST')
     def do_create(self):
         obj = self.create_object(self.request.POST)
-        return self.context.update({self.object_name: obj})
+        self.context.update({self.object_name: obj})
+        return self.context
 
 
     def do_list(self):
         dataset = self.get_dataset()
         paginator = Paginator(dataset, self.list_page_size)
         page = paginator.get_page(self.request.GET.get('page', 1))
-        return self.context.update({'%s_list' % self.object_name: page})
+        self.context.update({'%s_list' % self.object_name: page})
+        return self.context
 
 
     def do_detail(self, slug):
         obj = self.get_object(slug)
-        return self.context.update({self.object_name: obj})
+        self.context.update({self.object_name: obj})
+        return self.context
 
 
     @require_method('POST')
     def do_update(self, slug):
         obj = self.update_object(slug, self.request.POST)
-        return self.context.update({self.object_name: obj})
+        self.context.update({self.object_name: obj})
+        return self.context
 
 
     @require_method('POST')
