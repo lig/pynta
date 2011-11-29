@@ -85,6 +85,8 @@ class PyntaApp(Response):
             # fall back to choose app method according to http method
             method = getattr(self, self.request.method.lower())
 
+        # prepare context for method
+        self.context = self.get_context(**params)
         # get data from method
         data = method(**params)
 
@@ -122,12 +124,12 @@ class PyntaApp(Response):
                 return url_match
 
 
-    def get_context(self):
-        return NotImplemented
+    def get_context(self, **kwargs):
+        return {}
 
 
     def get(self, **kwargs):
-        return self.get_context(**kwargs)
+        return self.context
 
 
     def post(self, **kwargs):
