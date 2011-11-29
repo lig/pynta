@@ -1,3 +1,5 @@
+from string import Template
+
 from mako.lookup import TemplateLookup
 
 from base import Renderer
@@ -59,6 +61,12 @@ class Mako(Renderer):
             preprocessor=self.settings.preprocessor)
 
 
-    def render(self, data):
-        return self.template_lookup.get_template(
-            self.settings.template).render(**data)
+    def render(self, data, action_name=None):
+
+        if action_name and '$action' in self.settings.template:
+            template = Template(self.settings.template).substitute(
+                action=action_name)
+        else:
+            template = self.settings.template
+
+        return self.template_lookup.get_template(template).render(**data)

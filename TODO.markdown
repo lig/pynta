@@ -5,7 +5,6 @@
 * support for SQLAlchemy storage
 * authentication support
 * logging
-* app actions support
 * advanced form processing
 * generic administration interface
 * pynta stateful apps

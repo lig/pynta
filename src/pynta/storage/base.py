@@ -46,6 +46,14 @@ class Storage(object):
         """
         return uuid4().hex
 
+    def get_dataset(self, tag):
+        """
+        Returns dataset for tag `tag`.
+        
+        Dataset should realize dict api.
+        """
+        return NotImplemented
+
 
 class Anydbm(Storage):
 
@@ -78,6 +86,11 @@ class Anydbm(Storage):
 
     def delete(self, tag, key):
         del self.db[self._get_object_key(tag, key)]
+
+
+    def get_dataset(self, tag):
+        return [{k: loads(v)} for k, v in self.db.iteritems() if
+            k.startswith('%s+' % tag)]
 
 
     def _get_object_key(self, tag, key):

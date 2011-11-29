@@ -1,11 +1,11 @@
+from string import Template
+
 from webob import Request, Response
-from webob.exc import HTTPServerError, HTTPNotFound
+from webob.exc import HTTPServerError, HTTPNotFound, HTTPMethodNotAllowed
 
 from pynta.conf.provider import SettingsProvider
 from pynta.core.session import LazySession, Session
 from pynta.core.urls import UrlMatch
-
-ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
 
 
 class PyntaAppBase(SettingsProvider):
@@ -16,6 +16,8 @@ class PyntaAppBase(SettingsProvider):
 class PyntaApp(Response):
 
     __metaclass__ = PyntaAppBase
+
+    ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
 
     urls = (
         (r'^$', 'self', {}, ''),
@@ -47,13 +49,11 @@ class PyntaApp(Response):
 
             if url_match.app == 'self':
 
-                if self.request.method in ALLOWED_HTTP_METHODS:
+                if self.request.method in self.ALLOWED_HTTP_METHODS:
                     self.dispatch(params)
                     return Response.__call__(self, environ, start_response)
                 else:
-                    return HTTPServerError(
-                        'Method %s is not allowed on this server' %
-                            self.request.method)(environ, start_response)
+                    return HTTPMethodNotAllowed()(environ, start_response)
 
             else:
                 environ['SCRIPT_NAME'] += url_match.app_url
@@ -74,7 +74,8 @@ class PyntaApp(Response):
         # check for action
         if '_action' in params:
             # choose app method by action name
-            method = getattr(self, '_%s' % params['_action'], None)
+            action_name = params['_action']
+            method = getattr(self, 'do_%s' % action_name, None)
 
             if method:
                 # del '_action' parameter from params
@@ -85,14 +86,17 @@ class PyntaApp(Response):
 
         else:
             # fall back to choose app method according to http method
+            action_name = None
             method = getattr(self, self.request.method.lower())
 
+        # prepare context for method
+        self.context = self.get_context(**params)
         # get data from method
         data = method(**params)
 
         # use template renderer if app has it
         if hasattr(self, 'templates'):
-            self.text = unicode(self.templates.render(data))
+            self.text = unicode(self.templates.render(data, action_name))
         elif isinstance(data, unicode):
             self.text = data
 
@@ -124,8 +128,12 @@ class PyntaApp(Response):
                 return url_match
 
 
+    def get_context(self, **kwargs):
+        return {}
+
+
     def get(self, **kwargs):
-        return kwargs
+        return self.context
 
 
     def post(self, **kwargs):

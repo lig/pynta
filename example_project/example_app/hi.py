@@ -10,5 +10,5 @@ class HiApp(PyntaApp):
         template = 'hi.html'
 
 
-    def get(self, name, host):
+    def get_context(self, name, host):
         return {'name': u'%s' % name, 'host': u'%s' % host}
