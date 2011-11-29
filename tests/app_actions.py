@@ -1,4 +1,6 @@
-import unittest
+import os, unittest
+
+from pynta.conf import settings
 
 from test_project.test_app.action_app import ActionApp
 from test_project.test_app.crud_app import TestCRUDApp
@@ -24,12 +26,19 @@ class PyntaActionTest(unittest.TestCase):
             lambda status, headers: None)
         self.assertMultiLineEqual(self.app.text, self.etalon_output)
 
+    def tearDown(self):
+        if hasattr(self.app, 'storage'):
+            db_path = settings.STORAGE_ANYDBM['filename']
+            if os.path.exists(db_path):
+                os.remove(db_path)
+
 
 suite = unittest.TestSuite([
     PyntaActionTest(app=ActionApp, path_info='/list/test',
         etalon_output='list test\n'),
     PyntaActionTest(app=ActionApp, path_info='/detail/test',
         etalon_output='detail test\n'),
-    PyntaActionTest(app=TestCRUDApp, path_info='/', etalon_output='\n'),
-    PyntaActionTest(app=TestCRUDApp, path_info='/1', etalon_output='\n'),
+    PyntaActionTest(app=TestCRUDApp, path_info='/',
+        etalon_output="[{'test+1': 'test1'}, {'test+2': 'test2'}]\n"),
+    PyntaActionTest(app=TestCRUDApp, path_info='/1', etalon_output='test1\n'),
 ])

@@ -12,9 +12,9 @@ class CRUDApp(PyntaApp):
 
     urls = (
         (r'^$', 'self', {'_action': 'list'}, ''),
-        (r'^(?P<_action>create)/$', 'self', {}, ''),
-        (r'^(?P<slug>\w+)/$', 'self', {'_action': 'detail'}, ''),
-        (r'^(?P<slug>\w+)/(?P<_action>(update|delete))/$', 'self', {}, ''),
+        (r'^(?P<_action>create)$', 'self', {}, ''),
+        (r'^(?P<slug>\w+)$', 'self', {'_action': 'detail'}, ''),
+        (r'^(?P<slug>\w+)/(?P<_action>(update|delete))$', 'self', {}, ''),
     )
 
     object_name = 'object'
