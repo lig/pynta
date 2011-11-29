@@ -3,6 +3,9 @@ from pynta.storage.mongodb import Mongodb
 
 
 class Mongokit(Mongodb):
+    """
+    @todo: implement full storage interface using mongokit
+    """
 
     settings_name = 'STORAGE_MONGOKIT'
 
