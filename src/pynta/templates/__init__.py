@@ -1,6 +1,6 @@
-from base import PlainText
+from .base import PlainText
 
 try:
-    from makotemplates import Mako
+    from .makotemplates import Mako
 except ImportError:
-    print 'Mako templates support disabled.'
+    print('Mako templates support disabled.')

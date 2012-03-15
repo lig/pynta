@@ -1,5 +1,5 @@
-import anydbm
-from cPickle import dumps, loads
+import dbm
+from pickle import dumps, loads
 from uuid import uuid4
 
 
@@ -62,12 +62,12 @@ class Anydbm(Storage):
     class settings:
         filename = None
         flag = 'r'
-        mode = 0666
+        mode = 666
 
 
     def __init__(self, *args, **kwargs):
         super(Anydbm, self).__init__(*args, **kwargs)
-        self.db = anydbm.open(self.settings.filename, self.settings.flag,
+        self.db = dbm.open(self.settings.filename, self.settings.flag,
             self.settings.mode)
 
 
@@ -89,7 +89,7 @@ class Anydbm(Storage):
 
 
     def get_dataset(self, tag):
-        return [{k: loads(v)} for k, v in self.db.iteritems() if
+        return [{k: loads(v)} for k, v in self.db.items() if
             k.startswith('%s+' % tag)]
 
 

@@ -1,4 +1,4 @@
-from cPickle import dumps, loads
+from pickle import dumps, loads
 
 from pymongo.connection import Connection
 from pynta.storage.base import Storage

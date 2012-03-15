@@ -1,1 +1,1 @@
-from main import Pynta
+from .main import Pynta

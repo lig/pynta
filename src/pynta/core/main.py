@@ -20,5 +20,5 @@ class Pynta(URLMap):
             if app_class:
                 self[url] = app_class()
             else:
-                print ('Ignoring %s from INSTALLED_APPS setting: cannot find '
+                print('Ignoring %s from INSTALLED_APPS setting: cannot find '
                     'app class.' % app_name)

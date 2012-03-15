@@ -35,14 +35,14 @@ class Settings(object):
             self._settings = try_import_module('settings')
 
         if not self._settings:
-            print 'Cannot find settings. Using empty settings place holder.'
+            print('Cannot find settings. Using empty settings place holder.')
             self._settings = import_module('pynta.conf.empty_settings')
 
         from pynta import conf
         conf.settings = self
 
 
-    def __nonzero__(self):
+    def __bool__(self):
         return bool(self._settings)
 
 
