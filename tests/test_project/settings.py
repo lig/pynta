@@ -9,9 +9,9 @@ TEMPLATES_MAKO = {
     ]
 }
 
-STORAGE_ANYDBM = {
+STORAGE_DBM = {
     'flag': 'c',
     'filename': 'test.db'
 }
 
-SESSION_STORAGE = 'pynta.storage.Anydbm'
+SESSION_STORAGE = 'pynta.storage.Dbm'

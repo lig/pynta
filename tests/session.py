@@ -25,7 +25,7 @@ class PyntaSessionTest(unittest.TestCase):
         self.assertEqual(self.app.session.key, self.session_key)
 
     def tearDown(self):
-        os.remove(settings.STORAGE_ANYDBM['filename'])
+        os.remove(settings.STORAGE_DBM['filename'])
 
 
 suite = unittest.TestSuite([PyntaSessionTest()])

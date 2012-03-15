@@ -1,5 +1,5 @@
 from pynta.apps import PyntaApp
-from pynta.storage import Anydbm
+from pynta.storage import Dbm
 from pynta.templates import PlainText
 
 from .hi import HiApp
@@ -14,7 +14,7 @@ class Application(PyntaApp):
     )
 
     templates = PlainText
-    storage = Anydbm
+    storage = Dbm
 
     class storage_settings:
         filename = 'local.db'

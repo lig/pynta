@@ -28,7 +28,7 @@ class PyntaActionTest(unittest.TestCase):
 
     def tearDown(self):
         if hasattr(self.app, 'storage'):
-            db_path = settings.STORAGE_ANYDBM['filename']
+            db_path = settings.STORAGE_DBM['filename']
             if os.path.exists(db_path):
                 os.remove(db_path)
 

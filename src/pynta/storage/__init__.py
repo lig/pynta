@@ -1,4 +1,4 @@
-from .base import Anydbm
+from .base import Dbm
 from .mongodb import Mongodb
 try:
     from .mongokit_storage import Mongokit

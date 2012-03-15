@@ -55,9 +55,9 @@ class Storage(object):
         return NotImplemented
 
 
-class Anydbm(Storage):
+class Dbm(Storage):
 
-    settings_name = 'STORAGE_ANYDBM'
+    settings_name = 'STORAGE_DBM'
 
     class settings:
         filename = None
@@ -66,14 +66,14 @@ class Anydbm(Storage):
 
 
     def __init__(self, *args, **kwargs):
-        super(Anydbm, self).__init__(*args, **kwargs)
+        super(Dbm, self).__init__(*args, **kwargs)
         self.db = dbm.open(self.settings.filename, self.settings.flag,
             self.settings.mode)
 
 
     def __del__(self):
         self.db.close()
-        super(Anydbm, self).__del__()
+        super(Dbm, self).__del__()
 
 
     def get(self, tag, key):

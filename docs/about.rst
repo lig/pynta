@@ -34,7 +34,7 @@ Main Features
 * One app could handle a number of urls for different actions.
 * CRUD support out of the box (using actions mechanism). 
 * Different storages support (relational and non-relational):
- - Anydbm,
+ - dbm,
  - MongoDB via pymongo,
  - (planned) Relational via SQLAlchemy,
  - (deprecated) MongoDB via MongoKIT,
