@@ -1,3 +1,6 @@
 from base import Anydbm
 from mongodb import Mongodb
-from mongokit_storage import Mongokit
+try:
+    from mongokit_storage import Mongokit
+except ImportError:
+    print 'Mongokit storage support disabled.'
