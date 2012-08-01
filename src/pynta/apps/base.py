@@ -1,5 +1,3 @@
-from string import Template
-
 from webob import Request, Response
 from webob.exc import HTTPServerError, HTTPNotFound, HTTPMethodNotAllowed
 
@@ -23,6 +21,8 @@ class PyntaApp(Response):
         (r'^$', 'self', {}, ''),
     )
 
+    responsable = False
+
     def __init__(self, *args, **kwargs):
         super(PyntaApp, self).__init__(*args, **kwargs)
 
@@ -35,7 +35,6 @@ class PyntaApp(Response):
             urls.append(self._url(*url))
 
         self.urls = urls
-
 
     def __call__(self, environ, start_response):
         self.request = Request(environ)
@@ -51,7 +50,11 @@ class PyntaApp(Response):
 
                 if self.request.method in self.ALLOWED_HTTP_METHODS:
                     self.dispatch(params)
-                    return Response.__call__(self, environ, start_response)
+
+                    if self.responsable:
+                        return self.call(environ, start_response)
+                    else:
+                        return Response.__call__(self, environ, start_response)
                 else:
                     return HTTPMethodNotAllowed()(environ, start_response)
 
@@ -65,7 +68,6 @@ class PyntaApp(Response):
         else:
             return HTTPNotFound('%s is not found on this server' %
                 self.request.path)(environ, start_response)
-
 
     def dispatch(self, params):
         # init session
@@ -103,11 +105,9 @@ class PyntaApp(Response):
         # save session
         self.save_session()
 
-
     def init_session(self):
         session_key = self.request.cookies.get('PYNTA_SESSION_ID')
         self.session = LazySession(session_key)
-
 
     def save_session(self):
 
@@ -118,7 +118,6 @@ class PyntaApp(Response):
             else:
                 self.delete_cookie('PYNTA_SESSION_ID')
 
-
     def app_by_url(self):
         host = self.request.host
         path = self.request.path_info.lstrip('/')
@@ -127,22 +126,17 @@ class PyntaApp(Response):
             if url_match.match(host, path):
                 return url_match
 
-
     def get_context(self, **kwargs):
         return {}
-
 
     def get(self, **kwargs):
         return self.context
 
-
     def post(self, **kwargs):
         return self.get(**kwargs)
 
-
     def head(self, **kwargs):
         return None
-
 
     def _url(self, host_pattern, url_pattern, app_class, params, name):
 
