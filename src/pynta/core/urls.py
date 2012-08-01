@@ -2,6 +2,7 @@ import re
 
 from pynta.utils.collections import filter_dict
 
+
 class UrlMatch(object):
 
     def __init__(self, host_pattern, url_pattern, app, params, name):
@@ -11,12 +12,11 @@ class UrlMatch(object):
         self.default_params = params
         self.name = name
 
-
     def match(self, host, path):
         # we will store any match result till the next match() invocation only
         self.match_result = None
 
-        params = self.default_params or {}
+        params = dict(self.default_params) or {}
 
         if self.host_regex:
             host_match = self.host_regex.match(host)
@@ -47,11 +47,9 @@ class UrlMatch(object):
         }
         return True
 
-
     @property
     def app_url(self):
         return self.match_result and self.match_result['app_url']
-
 
     @property
     def params(self):
