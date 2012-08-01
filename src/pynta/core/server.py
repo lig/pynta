@@ -2,6 +2,7 @@ from argparse import ArgumentParser
 
 from paste import httpserver
 from paste import reloader
+from paste.translogger import TransLogger
 
 from pynta.conf import Settings
 from pynta.core import Pynta
@@ -22,4 +23,4 @@ def main():
 
     # init settings and serve Pynta
     Settings(params.settings)
-    httpserver.serve(Pynta())
+    httpserver.serve(TransLogger(Pynta()))
