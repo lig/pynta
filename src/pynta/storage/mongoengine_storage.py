@@ -56,7 +56,7 @@ class Mongoengine(Storage):
         if doc:
             obj = doc.objects.with_id(key)
         else:
-            stored_obj = PyntaStorage.objects(tag=tag, key=key).get()
+            stored_obj = PyntaStorage.objects(tag=tag, key=str(key)).get()
             obj = stored_obj.value
 
         return obj
@@ -77,7 +77,7 @@ class Mongoengine(Storage):
                     (obj, tag, key))
 
         else:
-            PyntaStorage(tag=tag, key=key, value=obj).save()
+            PyntaStorage(tag=tag, key=str(key), value=obj).save()
 
     def delete(self, tag, key):
         doc = self._get_document(tag)
@@ -85,7 +85,7 @@ class Mongoengine(Storage):
         if doc:
             doc.objects(pk=key).delete()
         else:
-            PyntaStorage.objects(tag=tag, key=key).delete()
+            PyntaStorage.objects(tag=tag, key=str(key)).delete()
 
     def get_free_key(self, tag):
         return str(ObjectId())
