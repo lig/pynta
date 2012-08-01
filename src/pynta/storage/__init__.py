@@ -9,3 +9,7 @@ try:
     from mongokit_storage import Mongokit
 except ImportError:
     warn('Mongokit storage support disabled.')
+try:
+    from mongoengine_storage import Mongoengine
+except ImportError:
+    warn('Mongoengine storage support disabled.')
