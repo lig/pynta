@@ -1,7 +1,7 @@
 from pynta.apps import PyntaApp
 from pynta.apps.decorators import require_method
 from pynta.core.paginator import Paginator
-from pynta.storage.base import Storage
+from pynta.storage.base import Anydbm
 
 
 class CRUDApp(PyntaApp):
@@ -18,7 +18,7 @@ class CRUDApp(PyntaApp):
     )
 
     object_name = 'object'
-    storage = Storage
+    storage = Anydbm
     list_page_size = 20
 
 
