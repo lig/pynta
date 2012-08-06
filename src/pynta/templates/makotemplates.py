@@ -2,7 +2,7 @@ from string import Template
 
 from mako.lookup import TemplateLookup
 
-from base import Renderer
+from .base import Renderer
 
 
 class Mako(Renderer):

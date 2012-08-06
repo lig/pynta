@@ -1,6 +1,3 @@
-# encoding: utf-8
-
-
 class SettingsProvider(type):
     """
     Provider for various settings sections. Allows embedding of section based

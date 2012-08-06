@@ -15,7 +15,7 @@ class ActionApp(PyntaApp):
 
 
     def do_list(self, parameter):
-        return {'test': u'list %s' % parameter}
+        return {'test': 'list %s' % parameter}
 
     def do_detail(self, parameter):
-        return {'test': u'detail %s' % parameter}
+        return {'test': 'detail %s' % parameter}

@@ -1,1 +1,1 @@
-from base import PyntaApp
+from .base import PyntaApp

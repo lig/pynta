@@ -1,16 +1,15 @@
-import anydbm
+import shelve as dbm
 from abc import ABCMeta, abstractmethod, abstractproperty
-from cPickle import dumps, loads
+from pickle import dumps, loads
 from uuid import uuid4
 
 from pynta.conf.provider import SettingsConsumer
 
 
-class Storage(SettingsConsumer):
+class Storage(SettingsConsumer, metaclass=ABCMeta):
     """
     Storage interface class. Defines typical storage properties and methods.
     """
-    __metaclass__ = ABCMeta
 
     @abstractproperty
     def settings_name(self):
@@ -70,14 +69,13 @@ class Anydbm(Storage):
     settings_name = 'STORAGE_ANYDBM'
 
     class settings:
-        filename = 'default'
+        filename = ''
         flag = 'r'
-        mode = 0666
+        mode = 0o666
 
     def __init__(self, *args, **kwargs):
         super(Anydbm, self).__init__(*args, **kwargs)
-        self.db = anydbm.open(self.settings.filename, self.settings.flag,
-            self.settings.mode)
+        self.db = dbm.open(self.settings.filename)
 
     def __del__(self):
         self.db.close()
@@ -100,7 +98,7 @@ class Anydbm(Storage):
         return uuid4().hex
 
     def get_dataset(self, tag):
-        return [{k: loads(v)} for k, v in self.db.iteritems() if
+        return [{k: loads(v)} for k, v in self.db.items() if
             k.startswith('%s+' % tag)]
 
     def _get_object_key(self, tag, key):

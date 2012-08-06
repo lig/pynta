@@ -42,7 +42,7 @@ class Settings(object):
         from pynta import conf
         conf.settings = self
 
-    def __nonzero__(self):
+    def __bool__(self):
         return bool(self._settings)
 
     def __getattr__(self, name):

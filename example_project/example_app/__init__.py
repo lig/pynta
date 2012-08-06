@@ -2,7 +2,7 @@ from pynta.apps import PyntaApp
 from pynta.storage import Anydbm
 from pynta.templates import PlainText
 
-from hi import HiApp
+from .hi import HiApp
 
 
 class Application(PyntaApp):

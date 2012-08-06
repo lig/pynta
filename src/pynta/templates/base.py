@@ -3,9 +3,7 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 from pynta.conf.provider import SettingsConsumer
 
 
-class Renderer(SettingsConsumer):
-    __metaclass__ = ABCMeta
-
+class Renderer(SettingsConsumer, metaclass=ABCMeta):
     @abstractproperty
     def settings_name(self):
         return NotImplemented
@@ -27,4 +25,4 @@ class PlainText(Renderer):
         pass
 
     def render(self, data, action=None):
-        return u'%s' % data
+        return '%s' % data
