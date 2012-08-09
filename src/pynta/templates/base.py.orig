@@ -1,0 +1,38 @@
+from abc import ABCMeta, abstractmethod, abstractproperty
+
+from pynta.conf.provider import SettingsConsumer
+
+<<<<<<< HEAD
+
+class Renderer(SettingsConsumer):
+    __metaclass__ = ABCMeta
+
+=======
+class Renderer(object, metaclass=ABCMeta):
+>>>>>>> First example app works on Paste3 already. Settings still need to be fixed in more elegant way.
+    @abstractproperty
+    def settings_name(self):
+        return NotImplemented
+
+    @abstractproperty
+    class settings:
+        pass
+
+    @abstractmethod
+    def render(self, data, action=None):
+        return NotImplemented
+
+
+class PlainText(Renderer):
+
+    settings_name = 'TEMPLATES_PLAINTEXT'
+
+    class settings:
+        pass
+
+    def render(self, data, action=None):
+        return '%s' % data
+
+    def __init__(self, settings, *args, **kwargs):
+        self.settings = settings
+        super(PlainText, self).__init__(*args, **kwargs)
