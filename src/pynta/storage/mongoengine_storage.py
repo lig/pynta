@@ -35,6 +35,7 @@ class Mongoengine(Storage):
         database = 'test'
 
     def __init__(self, *args, **kwargs):
+        super(Mongoengine, self).__init__(*args, **kwargs)
         self.connection = connect(
             db=self.settings.database,
             alias=self.settings.alias,
@@ -44,7 +45,6 @@ class Mongoengine(Storage):
             network_timeout=self.settings.network_timeout,
             tz_aware=self.settings.tz_aware)
         self.db = get_db(alias=self.settings.alias)
-        super(Mongoengine, self).__init__(*args, **kwargs)
 
     def __del__(self):
         disconnect(alias=self.settings.alias)

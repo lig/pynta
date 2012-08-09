@@ -17,8 +17,8 @@ class Mongodb(Storage):
         tz_aware = False
         database = 'test'
 
-
     def __init__(self, *args, **kwargs):
+        super(Mongodb, self).__init__(*args, **kwargs)
         self.connection = Connection(host=self.settings.host,
             port=self.settings.port,
             max_pool_size=self.settings.max_pool_size,
@@ -26,13 +26,10 @@ class Mongodb(Storage):
             document_class=self.settings.document_class,
             tz_aware=self.settings.tz_aware)
         self.db = self.connection[self.settings.database]
-        super(Mongodb, self).__init__(*args, **kwargs)
-
 
     def __del__(self):
         self.connection.disconnect()
         super(Mongodb, self).__del__()
-
 
     def get(self, tag, key):
         stored_obj = self.db[tag].find_one(key)
@@ -50,7 +47,6 @@ class Mongodb(Storage):
 
         return obj
 
-
     def put(self, tag, key, obj):
 
         if isinstance(obj, dict):
@@ -63,14 +59,11 @@ class Mongodb(Storage):
 
         self.db[tag].save(obj_to_save)
 
-
     def delete(self, tag, key):
         self.db[tag].remove(key)
 
-
     def get_free_key(self, tag):
         return self.db[tag].save({})
-
 
     def get_dataset(self, tag):
         return self.db[tag].find()

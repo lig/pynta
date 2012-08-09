@@ -34,7 +34,6 @@ class Mako(Renderer):
 
         template = None
 
-
     def __init__(self, *args, **kwargs):
         super(Mako, self).__init__(*args, **kwargs)
         self.template_lookup = TemplateLookup(
@@ -59,7 +58,6 @@ class Mako(Renderer):
             imports=self.settings.imports,
             input_encoding=self.settings.input_encoding,
             preprocessor=self.settings.preprocessor)
-
 
     def render(self, data, action_name=None):
 
