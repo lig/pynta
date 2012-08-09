@@ -3,8 +3,10 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 from cPickle import dumps, loads
 from uuid import uuid4
 
+from pynta.conf.provider import SettingsConsumer
 
-class Storage(object):
+
+class Storage(SettingsConsumer):
     """
     Storage interface class. Defines typical storage properties and methods.
     """

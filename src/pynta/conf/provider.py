@@ -1,3 +1,6 @@
+# encoding: utf-8
+
+
 class SettingsProvider(type):
     """
     Provider for various settings sections. Allows embedding of section based
@@ -20,7 +23,7 @@ class SettingsProvider(type):
             if hasattr(new_class, section_name):
                 # defaults
                 section_class = getattr(new_class, section_name)
-                section_settings = section_class.settings.__dict__
+                section_settings = section_class.settings.__dict__.copy()
 
                 # project settings
                 settings_name = section_class.settings_name
@@ -30,7 +33,8 @@ class SettingsProvider(type):
                 # app class settings
                 section_settings_name = '%s_settings' % section_name
                 class_settings = getattr(new_class, section_settings_name, {})
-                class_settings = class_settings and class_settings.__dict__
+                class_settings = (
+                    class_settings and class_settings.__dict__.copy())
                 section_settings.update(class_settings)
 
                 # sanitize settings
@@ -41,9 +45,20 @@ class SettingsProvider(type):
                 del section_settings
 
                 # initialize appropriate app property
-                section_instance = section_class()
-                section_instance.settings = type(section_settings_name, (),
-                    instance_settings)
+                section_instance = section_class(
+                    type(section_settings_name, (), instance_settings))
                 setattr(new_class, section_name, section_instance)
 
         return new_class
+
+
+class SettingsConsumer(object):
+    """
+    Base for all abstract base classes to be used as settings sections.
+    """
+
+    def __init__(self, settings, *args, **kwargs):
+        """
+        All subclasses MUST call super(…).__init__ when overriding this method.
+        """
+        self.settings = settings
