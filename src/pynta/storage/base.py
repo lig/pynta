@@ -70,7 +70,7 @@ class Anydbm(Storage):
     settings_name = 'STORAGE_ANYDBM'
 
     class settings:
-        filename = None
+        filename = 'default'
         flag = 'r'
         mode = 0666
 
