@@ -1,3 +1,6 @@
+# encoding: utf-8
+
+
 class SettingsProvider(type):
     """
     Provider for various settings sections. Allows embedding of section based
@@ -30,8 +33,12 @@ class SettingsProvider(type):
                 # app class settings
                 section_settings_name = '%s_settings' % section_name
                 class_settings = getattr(new_class, section_settings_name, {})
+<<<<<<< HEAD
                 class_settings = (
                     class_settings and class_settings.__dict__.copy())
+=======
+                class_settings = class_settings and class_settings.__dict__.copy()
+>>>>>>> First example app works on Paste3 already. Settings still need to be fixed in more elegant way.
                 section_settings.update(class_settings)
 
                 # sanitize settings
@@ -42,8 +49,14 @@ class SettingsProvider(type):
                 del section_settings
 
                 # initialize appropriate app property
+<<<<<<< HEAD
                 section_instance = section_class(
                     type(section_settings_name, (), instance_settings))
+=======
+                init_settings = type(section_settings_name, (),
+                    instance_settings)
+                section_instance = section_class(init_settings)
+>>>>>>> First example app works on Paste3 already. Settings still need to be fixed in more elegant way.
                 setattr(new_class, section_name, section_instance)
 
         return new_class

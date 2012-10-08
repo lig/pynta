@@ -24,7 +24,7 @@ from regression import suite as regression_suite
 
 
 if __name__ == '__main__':
-    runner = unittest.TextTestRunner()
+    runner = unittest.TextTestRunner(failfast=True)
     suite = unittest.TestSuite(
         [base_suite, session_suite, app_actions_suite, regression_suite])
     runner.run(suite)

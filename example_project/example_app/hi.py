@@ -11,4 +11,4 @@ class HiApp(PyntaApp):
 
 
     def get_context(self, name, host):
-        return {'name': u'%s' % name, 'host': u'%s' % host}
+        return {'name': '%s' % name, 'host': '%s' % host}

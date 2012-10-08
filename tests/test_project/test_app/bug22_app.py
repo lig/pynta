@@ -12,4 +12,4 @@ class Bug22App(PyntaApp):
     templates = PlainText
 
     def get_context(self, name, host):
-        return {'name': u'%s' % name, 'host': u'%s' % host}
+        return {'name': '%s' % name, 'host': '%s' % host}

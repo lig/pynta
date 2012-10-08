@@ -5,8 +5,12 @@ from uuid import uuid4
 
 from pynta.conf.provider import SettingsConsumer
 
+<<<<<<< HEAD
 
-class Storage(SettingsConsumer, metaclass=ABCMeta):
+class Storage(SettingsConsumer):
+=======
+class Storage(object, metaclass=ABCMeta):
+>>>>>>> First example app works on Paste3 already. Settings still need to be fixed in more elegant way.
     """
     Storage interface class. Defines typical storage properties and methods.
     """
@@ -69,11 +73,16 @@ class Anydbm(Storage):
     settings_name = 'STORAGE_ANYDBM'
 
     class settings:
+<<<<<<< HEAD
+        filename = 'default'
+=======
         filename = ''
+>>>>>>> First example app works on Paste3 already. Settings still need to be fixed in more elegant way.
         flag = 'r'
         mode = 0o666
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, settings, *args, **kwargs):
+        self.settings = settings
         super(Anydbm, self).__init__(*args, **kwargs)
         self.db = dbm.open(self.settings.filename)
 

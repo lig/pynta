@@ -11,9 +11,7 @@ class PyntaAppBase(SettingsProvider):
     handle_settings = 'templates', 'storage'
 
 
-class PyntaApp(Response):
-
-    __metaclass__ = PyntaAppBase
+class PyntaApp(Response, metaclass=PyntaAppBase):
 
     ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
 
@@ -98,8 +96,8 @@ class PyntaApp(Response):
 
         # use template renderer if app has it
         if hasattr(self, 'templates'):
-            self.text = unicode(self.templates.render(data, action_name))
-        elif isinstance(data, unicode):
+            self.text = str(self.templates.render(data, action_name))
+        elif isinstance(data, str):
             self.text = data
 
         # save session
