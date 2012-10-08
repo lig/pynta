@@ -26,18 +26,8 @@ class Settings(object):
     """
     _settings = None
 
-    def __init__(self, settings_module_name=None):
-
-        if settings_module_name:
-            self._settings = import_module(settings_module_name)
-        else:
-            sys.path.insert(0, os.path.curdir)
-            self._settings = import_module('settings')
-
-        if not self._settings:
-            warn('Cannot find settings. Using empty settings placeholder.')
-            self._settings = import_module('pynta.conf.empty_settings')
-
+    def __init__(self, settings_module):
+        self._settings = settings_module
         from pynta import conf
         conf.settings = self
 
@@ -64,3 +54,18 @@ class Settings(object):
 
 
 settings = UnconfiguredSettings()
+
+
+def setup_settings(settings_module_name=None):
+
+    if settings_module_name:
+        settings_module = import_module(settings_module_name)
+    else:
+        sys.path.insert(0, os.path.curdir)
+        settings_module = import_module('settings')
+
+    if not settings_module:
+        warn('Cannot find settings. Using empty settings placeholder.')
+        settings_module = import_module('pynta.conf.empty_settings')
+
+    Settings(settings_module)

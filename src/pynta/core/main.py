@@ -3,7 +3,7 @@
 from argparse import ArgumentParser
 from importlib import import_module
 
-from pynta.conf import Settings
+from pynta.conf import setup_settings
 from pynta.core.server import serve
 
 argument_parser = ArgumentParser()
@@ -17,7 +17,7 @@ def get_main_app():
 
 def main():
     params = argument_parser.parse_args()
-    Settings(params.settings)
+    setup_settings(params.settings)
     # @todo: handle host, port and app in params
     serve('localhost', 8000, get_main_app())
 
