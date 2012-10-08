@@ -1,7 +1,6 @@
-from paste.util.import_string import simple_import
-
 from pynta.conf import settings
 from pynta.conf.provider import SettingsProvider
+from pynta.utils.importing import simple_import
 
 
 class SessionBase(SettingsProvider):
@@ -34,15 +33,12 @@ class Session(object, metaclass=SessionBase):
             self.data = {}
             self.save()
 
-
     def __del__(self):
         self.save()
-
 
     def load(self):
         self.data = self.storage.get('session', self.key)
         return self.data
-
 
     def save(self):
         if self.key:
@@ -50,20 +46,16 @@ class Session(object, metaclass=SessionBase):
         else:
             raise KeyError('No session key defined. Deleted session?')
 
-
     def delete(self):
         self.storage.delete('session', self.key)
         # prevent session saving after deleting
         self.key = None
 
-
     def __getitem__(self, name):
         return self.data[name]
 
-
     def __setitem__(self, name, value):
         self.data[name] = value
-
 
     def __delitem__(self, name):
         del self.data[name]

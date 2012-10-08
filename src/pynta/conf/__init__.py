@@ -4,9 +4,8 @@ main `pynta` binary is started from that directory.
 """
 import os
 import sys
+from importlib import import_module
 from warnings import warn
-
-from paste.util.import_string import import_module, try_import_module
 
 
 class ConfigurationError(Exception):
@@ -33,7 +32,7 @@ class Settings(object):
             self._settings = import_module(settings_module_name)
         else:
             sys.path.insert(0, os.path.curdir)
-            self._settings = try_import_module('settings')
+            self._settings = import_module('settings')
 
         if not self._settings:
             warn('Cannot find settings. Using empty settings placeholder.')

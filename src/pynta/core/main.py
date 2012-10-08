@@ -1,24 +1,26 @@
-from paste.urlmap import URLMap
-from paste.util.import_string import simple_import
+#!/usr/bin/env python3
+
+from argparse import ArgumentParser
+from importlib import import_module
+
+from pynta.conf import Settings
+from pynta.core.server import serve
+
+argument_parser = ArgumentParser()
+argument_parser.add_argument('--settings', default=None,
+    help='Settings module name')
 
 
-class Pynta(URLMap):
+def get_main_app():
+    return import_module('application').Application()
 
-    def __init__(self):
-        from pynta.conf import settings
 
-        URLMap.__init__(self)
+def main():
+    params = argument_parser.parse_args()
+    Settings(params.settings)
+    # @todo: handle host, port and app in params
+    serve('localhost', 8000, get_main_app())
 
-        for url, app_name in settings.INSTALLED_APPS:
-            app = simple_import(app_name)
 
-            if hasattr(app, 'Application'):
-                app_class = app.Application
-            else:
-                app_class = app
-
-            if app_class:
-                self[url] = app_class()
-            else:
-                print(('Ignoring %s from INSTALLED_APPS setting: cannot find '
-                    'app class.' % app_name))
+if __name__ == '__main__':
+    main()

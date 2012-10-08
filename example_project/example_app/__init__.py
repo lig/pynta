@@ -19,6 +19,5 @@ class Application(PyntaApp):
     class storage_settings:
         filename = 'local.db'
 
-
     def get(self):
         return 'Hello!'
