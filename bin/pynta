@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 -m 'pynta.core.main' $*
+python -m 'pynta.core.main' $*
