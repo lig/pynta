@@ -9,6 +9,5 @@ class HiApp(PyntaApp):
     class templates_settings:
         template = 'hi.html'
 
-
     def get_context(self, name, host):
         return {'name': '%s' % name, 'host': '%s' % host}

@@ -1,8 +1,7 @@
-import os, unittest
+import unittest
 
 from webob import Request
 
-from pynta.conf import settings
 from pynta.core.session import Session
 
 from test_project.test_app import Application

@@ -1,4 +1,5 @@
-import os, unittest
+import os
+import unittest
 
 from pynta.conf import settings
 
