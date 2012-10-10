@@ -5,7 +5,7 @@ import sys
 import unittest
 
 try:
-    from pynta.conf import Settings
+    from pynta.conf import setup_settings
 except ImportError:
     # No pynta on PYTHONPATH. May be we are in the source dir?
     src_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
@@ -13,9 +13,9 @@ except ImportError:
     if os.path.exists(src_path):
         # Let's import from there then.
         sys.path.insert(0, src_path)
-        from pynta.conf import Settings
+        from pynta.conf import setup_settings
 
-Settings('test_project.settings')
+setup_settings('test_project.settings')
 
 from base import suite as base_suite
 from session import suite as session_suite
