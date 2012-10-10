@@ -5,6 +5,7 @@ from pynta.conf.provider import SettingsConsumer
 
 class Renderer(SettingsConsumer):
     __metaclass__ = ABCMeta
+
     @abstractproperty
     def settings_name(self):
         return NotImplemented

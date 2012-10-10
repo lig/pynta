@@ -7,10 +7,10 @@ from pynta.conf.provider import SettingsConsumer
 
 
 class Storage(SettingsConsumer):
-    __metaclass__ = ABCMeta
     """
     Storage interface class. Defines typical storage properties and methods.
     """
+    __metaclass__ = ABCMeta
 
     @abstractproperty
     def settings_name(self):
