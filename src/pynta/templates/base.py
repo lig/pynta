@@ -3,7 +3,9 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 from pynta.conf.provider import SettingsConsumer
 
 
-class Renderer(SettingsConsumer, metaclass=ABCMeta):
+class Renderer(SettingsConsumer):
+    __metaclass__ = ABCMeta
+
     @abstractproperty
     def settings_name(self):
         return NotImplemented

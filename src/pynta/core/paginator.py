@@ -68,10 +68,8 @@ class Page(Sequence):
         self.num_pages = num_pages
         self.paginator = paginator
 
-
     def __getitem__(self, index):
         return self.data[index]
-
 
     def __len__(self):
         return len(self.data)
