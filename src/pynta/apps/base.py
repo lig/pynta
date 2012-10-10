@@ -11,8 +11,9 @@ class PyntaAppBase(SettingsProvider):
     handle_settings = 'templates', 'storage'
 
 
-class PyntaApp(Response, metaclass=PyntaAppBase):
+class PyntaApp(Response):
 
+    __metaclass__ = PyntaAppBase
     ALLOWED_HTTP_METHODS = ('GET', 'POST', 'HEAD')
 
     urls = (

@@ -6,7 +6,8 @@ from uuid import uuid4
 from pynta.conf.provider import SettingsConsumer
 
 
-class Storage(SettingsConsumer, metaclass=ABCMeta):
+class Storage(SettingsConsumer):
+    __metaclass__ = ABCMeta
     """
     Storage interface class. Defines typical storage properties and methods.
     """
