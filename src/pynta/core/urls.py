@@ -1,6 +1,7 @@
 import re
 
 from pynta.utils.collections import filter_dict
+from pynta.utils.decorators import add_first_arg
 
 
 class UrlMatch(object):
@@ -54,3 +55,17 @@ class UrlMatch(object):
     @property
     def params(self):
         return self.match_result and self.match_result['params']
+
+
+@add_first_arg(None)
+def url(host_pattern, url_pattern, app, params=None, name=None):
+    """
+    url([host_pattern, ]url_pattern, app[, params][, name])
+    """
+
+    if isinstance(app, type):
+        app = app()
+
+    params = params or {}
+    return UrlMatch(host_pattern=host_pattern, url_pattern=url_pattern,
+        app=app, params=params, name=name)

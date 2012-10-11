@@ -3,7 +3,7 @@ from webob.exc import HTTPServerError, HTTPNotFound, HTTPMethodNotAllowed
 
 from pynta.conf.provider import SettingsProvider
 from pynta.core.session import LazySession, Session
-from pynta.core.urls import UrlMatch
+from pynta.core.urls import UrlMatch, url
 
 
 class PyntaAppBase(SettingsProvider):
@@ -24,16 +24,9 @@ class PyntaApp(Response):
 
     def __init__(self, *args, **kwargs):
         super(PyntaApp, self).__init__(*args, **kwargs)
-
-        urls = []
-        for url in self.urls:
-
-            if len(url) == 4:
-                url = (None,) + url
-
-            urls.append(self._url(*url))
-
-        self.urls = urls
+        self.urls = map(
+            lambda u: isinstance(u, UrlMatch) and u or url(*u),
+            self.urls)
 
     def __call__(self, environ, start_response):
         self.request = Request(environ)
@@ -136,13 +129,3 @@ class PyntaApp(Response):
 
     def head(self, **kwargs):
         return None
-
-    def _url(self, host_pattern, url_pattern, app_class, params, name):
-
-        if app_class == 'self':
-            app = 'self'
-        else:
-            app = app_class()
-
-        return UrlMatch(host_pattern=host_pattern, url_pattern=url_pattern,
-            app=app, params=params, name=name)
