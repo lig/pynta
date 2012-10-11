@@ -1,0 +1,7 @@
+## required
+WebOb
+
+## optional
+# pymongo
+# mongoengine
+# Mako
