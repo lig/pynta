@@ -9,6 +9,10 @@ TEMPLATES_MAKO = {
     ]
 }
 
+TEMPLATES_CHEETAH = {
+    'template_dir': os.path.join(PROJECT_ROOT, 'templates')
+}
+
 STORAGE_ANYDBM = {
     'flag': 'c',
     'filename': 'test.db'
