@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pynta.conf.provider &mdash; Pynta dev documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="top" title="Pynta dev documentation" href="../../../index.html" />
+    <link rel="up" title="pynta.conf" href="../../pynta/conf.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Pynta dev documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../pynta/conf.html" accesskey="U">pynta.conf</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for pynta.conf.provider</h1><div class="highlight"><pre>
+<span class="c"># coding: u8</span>
+
+
+<div class="viewcode-block" id="SettingsProvider"><a class="viewcode-back" href="../../../reference/conf.html#pynta.conf.provider.SettingsProvider">[docs]</a><span class="k">class</span> <span class="nc">SettingsProvider</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provider for various settings sections. Allows embedding of section based</span>
+<span class="sd">    settings slices depending on templates, storage or any other settings</span>
+<span class="sd">    depended classes connected to app class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handle_settings</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pynta.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+
+        <span class="c"># for all handled settings we will take defaults from provided class,</span>
+        <span class="c"># apply project settings on it, apply resolved app settings and then</span>
+        <span class="c"># instantiate appropriated app settings properties</span>
+
+        <span class="n">new_class</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">section_name</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">handle_settings</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">new_class</span><span class="p">,</span> <span class="n">section_name</span><span class="p">):</span>
+                <span class="c"># defaults</span>
+                <span class="n">section_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_class</span><span class="p">,</span> <span class="n">section_name</span><span class="p">)</span>
+                <span class="n">section_settings</span> <span class="o">=</span> <span class="n">section_class</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+                <span class="c"># project settings</span>
+                <span class="n">settings_name</span> <span class="o">=</span> <span class="n">section_class</span><span class="o">.</span><span class="n">settings_name</span>
+                <span class="n">project_settings</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">settings_name</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="n">section_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">project_settings</span><span class="p">)</span>
+
+                <span class="c"># app class settings</span>
+                <span class="n">section_settings_name</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">_settings&#39;</span> <span class="o">%</span> <span class="n">section_name</span>
+                <span class="n">class_settings</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_class</span><span class="p">,</span> <span class="n">section_settings_name</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="n">class_settings</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">class_settings</span> <span class="ow">and</span> <span class="n">class_settings</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+                <span class="n">section_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">class_settings</span><span class="p">)</span>
+
+                <span class="c"># sanitize settings</span>
+                <span class="n">instance_settings</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">section_settings</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">):</span>
+                        <span class="n">instance_settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">section_settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">del</span> <span class="n">section_settings</span>
+
+                <span class="c"># initialize appropriate app property</span>
+                <span class="n">section_instance</span> <span class="o">=</span> <span class="n">section_class</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">section_settings_name</span><span class="p">,</span> <span class="p">(),</span> <span class="n">instance_settings</span><span class="p">))</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">new_class</span><span class="p">,</span> <span class="n">section_name</span><span class="p">,</span> <span class="n">section_instance</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new_class</span>
+
+</div>
+<div class="viewcode-block" id="SettingsConsumer"><a class="viewcode-back" href="../../../reference/conf.html#pynta.conf.provider.SettingsConsumer">[docs]</a><span class="k">class</span> <span class="nc">SettingsConsumer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base for all abstract base classes to be used as settings sections.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        All subclasses MUST call super(…).__init__ when overriding this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Pynta dev documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../pynta/conf.html" >pynta.conf</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Serge Matveenko.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
