@@ -45,10 +45,8 @@ Main Features
 * CRUD support out of the box (using actions mechanism). 
 * Different storages support (relational and non-relational):
  - Anydbm,
- - MongoDB via pymongo,
+ - MongoDB via pymongo and/or MongoEngine,
  - (planned) Relational via SQLAlchemy,
- - (deprecated) MongoDB via MongoKIT,
- - (planned) MongoDB via MongoEngine.
 * (planned) Forms processing support (storage integrated).
 * Sessions support.
 * (planned) Authentication support.
