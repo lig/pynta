@@ -13,7 +13,7 @@ See https://github.com/lig/pynta/contributors
 About
 -----
 
-See https://github.com/lig/pynta/blob/master/docs/about.rst#readme
+See https://github.com/lig/pynta/blob/master/docs/index.rst#readme
 
 
 Tasks and bugs
