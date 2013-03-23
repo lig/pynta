@@ -14,7 +14,7 @@ TEMPLATES_CHEETAH = {
 }
 
 STORAGE_ANYDBM = {
-    'flag': 'c',
+    'flag': 'n',
     'filename': 'test.db'
 }
 

@@ -1,4 +1,4 @@
-import shelve as dbm
+import dbm
 from abc import ABCMeta, abstractmethod, abstractproperty
 from pickle import dumps, loads
 from uuid import uuid4
@@ -70,12 +70,13 @@ class Anydbm(Storage):
 
     class settings:
         filename = ''
-        flag = 'r'
+        flag = 'c'
         mode = 0o666
 
     def __init__(self, *args, **kwargs):
         super(Anydbm, self).__init__(*args, **kwargs)
-        self.db = dbm.open(self.settings.filename)
+        self.db = dbm.open(
+            self.settings.filename, self.settings.flag, self.settings.mode)
 
     def __del__(self):
         self.db.close()
