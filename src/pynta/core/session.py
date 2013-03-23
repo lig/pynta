@@ -14,9 +14,7 @@ class SessionBase(SettingsProvider):
         return SettingsProvider.__new__(cls, name, bases, args)
 
 
-class Session(object):
-    __metaclass__ = SessionBase
-
+class Session(object, metaclass=SessionBase):
     def __init__(self, session_key=None):
         self.key = session_key
 

@@ -6,11 +6,10 @@ from uuid import uuid4
 from pynta.conf.provider import SettingsConsumer
 
 
-class Storage(SettingsConsumer):
+class Storage(SettingsConsumer, metaclass=ABCMeta):
     """
     Storage interface class. Defines typical storage properties and methods.
     """
-    __metaclass__ = ABCMeta
 
     @abstractproperty
     def settings_name(self):
@@ -99,7 +98,7 @@ class Anydbm(Storage):
         return uuid4().hex
 
     def get_dataset(self, tag):
-        return [{k: loads(v)} for k, v in self.db.items() if
+        return [{k: loads(v)} for k, v in list(self.db.items()) if
             k.startswith('%s+' % tag)]
 
     def _get_object_key(self, tag, key):
