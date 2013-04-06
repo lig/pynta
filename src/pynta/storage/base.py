@@ -1,4 +1,5 @@
 import dbm
+import os
 from abc import ABCMeta, abstractmethod, abstractproperty
 from pickle import dumps, loads
 from uuid import uuid4
@@ -65,18 +66,30 @@ class Storage(SettingsConsumer, metaclass=ABCMeta):
 
 
 class Anydbm(Storage):
+    __open_dbs = {}
 
     settings_name = 'STORAGE_ANYDBM'
 
     class settings:
         filename = ''
         flag = 'c'
-        mode = 0o666
+        mode = 438
 
     def __init__(self, *args, **kwargs):
         super(Anydbm, self).__init__(*args, **kwargs)
-        self.db = dbm.open(
-            self.settings.filename, self.settings.flag, self.settings.mode)
+        filename = os.path.abspath(self.settings.filename)
+
+        if filename not in self.__open_dbs:
+            self.__open_dbs[filename] = [
+                dbm.open(
+                    filename,
+                    self.settings.flag,
+                    self.settings.mode),
+                0
+            ]
+
+        self.__open_dbs[filename][1] += 1
+        self.db = self.__open_dbs[filename][0]
 
     def __del__(self):
         self.db.close()
@@ -99,8 +112,8 @@ class Anydbm(Storage):
         return uuid4().hex
 
     def get_dataset(self, tag):
-        return [{k: loads(v)} for k, v in list(self.db.items()) if
-            k.startswith('%s+' % tag)]
+        return [{k.decode(): loads(self.db[k])} for k in self.db.keys() if
+            k.decode().startswith('%s+' % tag)]
 
     def _get_object_key(self, tag, key):
         return str('%s+%s' % (tag, key))
