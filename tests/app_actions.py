@@ -40,6 +40,6 @@ suite = unittest.TestSuite([
     PyntaActionTest(app=ActionApp, path_info='/detail/test',
         etalon_output='detail test\n'),
     PyntaActionTest(app=TestCRUDApp, path_info='/',
-        etalon_output="[{'test+1': 'test1'}, {'test+2': 'test2'}]\n"),
+        etalon_output="[{'test+2': 'test2'}, {'test+1': 'test1'}]\n"),
     PyntaActionTest(app=TestCRUDApp, path_info='/1', etalon_output='test1\n'),
 ])

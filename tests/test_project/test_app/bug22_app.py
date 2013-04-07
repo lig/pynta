@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from pynta.apps import PyntaApp
 from pynta.templates import PlainText
 
@@ -12,4 +14,4 @@ class Bug22App(PyntaApp):
     templates = PlainText
 
     def get_context(self, name, host):
-        return {'name': '%s' % name, 'host': '%s' % host}
+        return OrderedDict([('name', '%s' % name), ('host', '%s' % host)])

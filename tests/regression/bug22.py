@@ -33,4 +33,4 @@ class Bug22Test(unittest.TestCase):
         app(environ2, start_response)
         app(environ3, start_response)
         self.assertMultiLineEqual(
-            app.text, "{'host': 'localhost', 'name': 'pal'}")
+            app.text, "OrderedDict([('name', 'pal'), ('host', 'localhost')])")
