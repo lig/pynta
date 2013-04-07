@@ -7,22 +7,6 @@ from collections import Iterable, Sized, Container, Sequence
 from math import ceil
 
 
-class Paginator(object):
-
-    def __init__(self, dataset, page_size=None):
-
-        if isinstance(dataset, Iterable):
-
-            if isinstance(dataset, Sized):
-                self.__class__ = _PageSequence
-            else:
-                self.__class__ = _PageIterator
-
-            self.__init__(dataset, page_size)
-        else:
-            raise TypeError('dataset must be an instance of any iterable')
-
-
 class _PageIterator(Iterable):
 
     def __init__(self, dataset, page_size=None):
@@ -38,6 +22,8 @@ class _PageIterator(Iterable):
         dataslice = list(self.data[page_start:page_end])
         return Page(dataslice, index + 1, None, self)
 
+    def __iter__(self):
+        return self
 
 class _PageSequence(_PageIterator, Sized, Container):
 
@@ -53,6 +39,22 @@ class _PageSequence(_PageIterator, Sized, Container):
 
     def __contains__(self, x):
         return x < len(self)
+
+
+class Paginator(_PageIterator):
+
+    def __init__(self, dataset, page_size=None):
+
+        if isinstance(dataset, Iterable):
+
+            if isinstance(dataset, Sized):
+                self.__class__ = _PageSequence
+            else:
+                self.__class__ = _PageIterator
+
+            self.__init__(dataset, page_size)
+        else:
+            raise TypeError('dataset must be an instance of any iterable')
 
 
 class Page(Sequence):
