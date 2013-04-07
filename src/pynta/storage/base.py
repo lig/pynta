@@ -92,7 +92,15 @@ class Anydbm(Storage):
         self.db = self.__open_dbs[filename][0]
 
     def __del__(self):
-        self.db.close()
+        filename = os.path.abspath(self.settings.filename)
+
+        if filename in self.__open_dbs:
+            self.__open_dbs[filename][1] -= 1
+
+            if self.__open_dbs[filename][1] <= 0:
+                del self.__open_dbs[filename]
+                self.db.close()
+
         super(Anydbm, self).__del__()
 
     def get(self, tag, key):
