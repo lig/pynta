@@ -30,7 +30,6 @@ class Mongoengine(Storage):
         host = 'localhost'
         port = 27017
         max_pool_size = 10
-        network_timeout = None
         tz_aware = False
         database = 'test'
 
@@ -42,7 +41,6 @@ class Mongoengine(Storage):
             host=self.settings.host,
             port=self.settings.port,
             max_pool_size=self.settings.max_pool_size,
-            network_timeout=self.settings.network_timeout,
             tz_aware=self.settings.tz_aware)
         self.db = get_db(alias=self.settings.alias)
 
