@@ -9,7 +9,7 @@ def pytest_configure(config):
     except ImportError:
         # No pynta on PYTHONPATH. May be we are in the source dir?
         src_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-            os.pardir, 'src'))
+            os.pardir))
         if os.path.exists(src_path):
             # Let's import from there then.
             sys.path.insert(0, src_path)
