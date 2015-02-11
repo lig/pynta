@@ -22,7 +22,8 @@ class PyntaApp(Response, metaclass=PyntaAppBase):
 
     def __init__(self, *args, **kwargs):
         super(PyntaApp, self).__init__(*args, **kwargs)
-        self.urls = [isinstance(u, UrlMatch) and u or url(*u) for u in self.urls]
+        self.urls = [isinstance(u, UrlMatch) and u or url(*u)
+                     for u in self.urls]
 
     def __call__(self, environ, start_response):
         self.request = Request(environ)
