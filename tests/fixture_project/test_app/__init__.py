@@ -1,11 +1,9 @@
-from pynta.apps import PyntaApp
+from aiohttp.web import Response
+
+from pynta.apps.aio import PyntaApp
 
 
 class Application(PyntaApp):
 
-    def get(self):
-        self.session['test'] = 'value'
-        return ''
-
-    def render(self, data):
-        return '%s' % data
+    def dispatch(self, request):
+        return Response(text='test text')
